@@ -92,17 +92,17 @@
 
 
 
-<meta name="description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引">
+<meta name="description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Inverted Index in the Luence">
 <meta property="og:url" content="http://blog.mengy.org/2017/08/29/Inverted-Index-in-the-Luence/index.html">
 <meta property="og:site_name" content="Mengy">
-<meta property="og:description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引">
+<meta property="og:description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-23T17:13:00.787Z">
+<meta property="og:updated_time" content="2017-09-24T04:03:16.326Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Inverted Index in the Luence">
-<meta name="twitter:description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引">
+<meta name="twitter:description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。">
 
 
 
@@ -381,10 +381,10 @@
       
 
       
-        <p>假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。<br><a id="more"></a></p>
-<p>这种数据结构是搜索程序的核心数据结构，它本身并不复杂，很容易理解，网上的解释也很多，具体可以参考<a href="https://zh.wikipedia.org/wiki/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95" target="_blank" rel="external">维基百科</a>。因为最近接触ElasticSearch，比较好奇它的倒排索引是怎么实现的。</p>
-<p><a href="https://en.wikipedia.org/wiki/Elasticsearch" target="_blank" rel="external">ElasticSearch</a>是一个基于<a href="https://zh.wikipedia.org/wiki/Lucene" target="_blank" rel="external">Lucene</a>的全文搜索引擎。Lucene提供了搜索的核心功能，维护倒排索引是其中的功能之一。</p>
-<p>Luence的倒排索引是由许多子片段组成的。每一个子片段是一个完整的能独立工作的子索引，由几个二进制文件组成。当有新的文档需要被索引时，会新建子索引，当有文档被删除时，并不会删除对应的索引数据，而是做标记，记录这些数据已经失效了。子索引数据的合并和删除会在某一时间统一执行。</p>
+        <p>假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。<br><a id="more"></a></p>
+<p>这种数据结构是搜索程序的核心数据结构，它本身并不复杂，很容易理解，网上的解释也很多，具体可以参考<a href="https://zh.wikipedia.org/wiki/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95" target="_blank" rel="external">维基百科</a>。因为最近接触ElasticSearch，比较好奇它的倒排索引是怎么实现的。</p>
+<p><a href="https://en.wikipedia.org/wiki/Elasticsearch" target="_blank" rel="external">ElasticSearch</a>是一个基于<a href="https://zh.wikipedia.org/wiki/Lucene" target="_blank" rel="external">Lucene</a>的全文搜索引擎。Lucene提供了搜索的核心功能，维护倒排索引是其中的功能之一。</p>
+<p>Luence的倒排索引是由许多子片段组成的。每一个子片段是一个完整的能独立工作的子索引，由几个二进制文件组成。当有新的文档需要被索引时，会新建子索引，当有文档被删除时，并不会删除对应的索引数据，而是做标记，记录这些数据已经失效了。子索引数据的合并和删除会在某一时间统一执行。</p>
 <p>Luence里对数据的基本定义是这样的：</p>
 <blockquote>
 <p>The fundamental concepts in Lucene are index, document, field and term.</p>
@@ -399,8 +399,8 @@
 </ul>
 <p>The same sequence of bytes in two different fields is considered a different term. Thus terms are represented as a pair: the string naming the field, and the bytes within the field.</p>
 </blockquote>
-<p>所有这些信息都被保存到几个二进制文件里。Lucene为了减少数据的大小，对数据采用了bit packing的压缩方法。举个例子，一个字节可以表示0～127的无符号数，但是如果我们的数据确定最大不会超过63，那就可以只用4位来表示，这样就省去了一半的空间。类似的方法还有ZigZag编码。这部分实现对应代码org.apache.lucene.util.packed。</p>
-<p>为了提高搜索效率，Lucene底层查找Term Dictionary(记录了term在文档中的位置信息)时使用了跳跃链表的数据结构。它相对于平衡二叉树简单，但是也有不错的性能，Redies中也有用到。</p>
+<p>所有这些信息都被保存到几个二进制文件里。Lucene为了减少数据的大小，对数据采用了bit packing的压缩方法。举个例子，一个字节可以表示0～127的无符号数，但是如果我们的数据确定最大不会超过63，那就可以只用4位来表示，这样就省去了一半的空间。类似的方法还有ZigZag编码。这部分实现对应代码org.apache.lucene.util.packed。</p>
+<p>为了提高搜索效率，Lucene底层查找Term Dictionary(记录了term在文档中的位置信息)时使用了跳跃链表的数据结构。它相对于平衡二叉树简单，但是也有不错的性能，Redies中也有用到。</p>
 <h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p><a href="https://www.slideshare.net/lucenerevolution/what-is-inaluceneagrandfinal" target="_blank" rel="external">What is in a Lucene index</a></p>
 <p><a href="http://alexbenedetti.blogspot.hk/2015/07/exploring-solr-internals-lucene.html" target="_blank" rel="external">Exploring Solr Internals : The Lucene Inverted Index</a></p>
 <p><a href="https://lucene.apache.org/core/6_6_0/core/org/apache/lucene/codecs/lucene62/package-summary.html#package.description" target="_blank" rel="external">Lucene file format</a></p>
