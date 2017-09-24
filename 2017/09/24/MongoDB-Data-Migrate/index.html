@@ -67,17 +67,17 @@
 
 
 
-<meta name="description" content="MongoDB Data Migration MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
+<meta name="description" content="MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MongoDB Data Migration">
 <meta property="og:url" content="http://blog.mengy.org/2017/09/24/MongoDB-Data-Migrate/index.html">
 <meta property="og:site_name" content="Mengy">
-<meta property="og:description" content="MongoDB Data Migration MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
+<meta property="og:description" content="MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-24T02:15:59.909Z">
+<meta property="og:updated_time" content="2017-09-24T06:08:32.339Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MongoDB Data Migration">
-<meta name="twitter:description" content="MongoDB Data Migration MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
+<meta name="twitter:description" content="MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
 
 
 
@@ -351,7 +351,7 @@
       
 
       
-        <h1 id="MongoDB-Data-Migration"><a href="#MongoDB-Data-Migration" class="headerlink" title="MongoDB Data Migration"></a>MongoDB Data Migration</h1><ul>
+        <ul>
 <li><p>MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。</p>
 </li>
 <li><p>备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。</p>
@@ -913,7 +913,7 @@
 
                   // select top N slices in content
 
-                  var upperBound = parseInt('5');
+                  var upperBound = parseInt('3');
                   if (upperBound >= 0) {
                     slicesOfContent = slicesOfContent.slice(0, upperBound);
                   }
