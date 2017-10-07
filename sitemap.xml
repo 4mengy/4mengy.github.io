@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.mengy.org/how-valgrind-work/</loc>
+    <loc>http://blog.mengy.org/books/index.html</loc>
     
-    <lastmod>2017-09-24T06:52:57.620Z</lastmod>
+    <lastmod>2017-10-07T14:01:37.973Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.mengy.org/MongoDB-Data-Migrate/</loc>
     
-    <lastmod>2017-09-24T06:08:32.339Z</lastmod>
+    <lastmod>2017-09-27T14:07:04.054Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.mengy.org/Inverted-Index-in-the-Luence/</loc>
     
-    <lastmod>2017-09-24T04:03:16.326Z</lastmod>
+    <lastmod>2017-09-27T14:07:04.053Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.mengy.org/how-valgrind-work/</loc>
+    
+    <lastmod>2017-09-27T14:07:04.052Z</lastmod>
     
   </url>
   
