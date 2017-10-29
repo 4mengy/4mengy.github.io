@@ -67,13 +67,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mengy">
-<meta property="og:url" content="http://blog.mengy.org/archives/2017/08/index.html">
+<meta name="description" content="GDB不仅可以调试C/C++程序，它还可以调试Python等程序，是非常重要和有力的开发工具之一。大部分情况下，都可以直接安装发行版提供的gdb来调试程序，但是，某些情况下需要自己编译，例如，机器无法上网；甚至没有权限修改系统，无法安装软件。下面以CentOS为例，介绍如何在离线并且没有全部权限的情况下使用GDB调试Python程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debugg Python with GDB in off-line CentOS">
+<meta property="og:url" content="http://blog.mengy.org/debug-python-with-gdb-in-offline-centos/index.html">
 <meta property="og:site_name" content="Mengy">
+<meta property="og:description" content="GDB不仅可以调试C/C++程序，它还可以调试Python等程序，是非常重要和有力的开发工具之一。大部分情况下，都可以直接安装发行版提供的gdb来调试程序，但是，某些情况下需要自己编译，例如，机器无法上网；甚至没有权限修改系统，无法安装软件。下面以CentOS为例，介绍如何在离线并且没有全部权限的情况下使用GDB调试Python程序。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-29T19:10:37.048Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mengy">
+<meta name="twitter:title" content="Debugg Python with GDB in off-line CentOS">
+<meta name="twitter:description" content="GDB不仅可以调试C/C++程序，它还可以调试Python等程序，是非常重要和有力的开发工具之一。大部分情况下，都可以直接安装发行版提供的gdb来调试程序，但是，某些情况下需要自己编译，例如，机器无法上网；甚至没有权限修改系统，无法安装软件。下面以CentOS为例，介绍如何在离线并且没有全部权限的情况下使用GDB调试Python程序。">
 
 
 
@@ -103,13 +107,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.mengy.org/archives/2017/08/"/>
+  <link rel="canonical" href="http://blog.mengy.org/debug-python-with-gdb-in-offline-centos/"/>
 
 
 
 
 
-  <title>归档 | Mengy</title>
+  <title>Debugg Python with GDB in off-line CentOS | Mengy</title>
   
 
 
@@ -137,7 +141,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -265,74 +269,257 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 4 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h2 class="archive-year" id="archive-year-2017">2017</h2>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/debug-python-with-gdb-in-offline-centos/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mengy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mengy">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/Inverted-Index-in-the-Luence/" itemprop="url">
-              
-                <span itemprop="name">Inverted Index in the Luence</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">Debugg Python with GDB in off-line CentOS</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-29T10:50:39+08:00"
-              content="2017-08-29" >
-          08-29
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-30T02:57:07+08:00">
+                2017-10-30
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/debug-python-with-gdb-in-offline-centos/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="debug-python-with-gdb-in-offline-centos/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <p>GDB不仅可以调试C/C++程序，它还可以调试Python等程序，是非常重要和有力的开发工具之一。大部分情况下，都可以直接安装发行版提供的gdb来调试程序，但是，某些情况下需要自己编译，例如，机器无法上网；甚至没有权限修改系统，无法安装软件。下面以CentOS为例，介绍如何在离线并且没有全部权限的情况下使用GDB调试Python程序。</p>
+<a id="more"></a>
+<p>首先，需要在相同系统版本可以上网的机器上编译GDB</p>
+<blockquote>
+<p><code>wget -c http://ftp.gnu.org/gnu/gdb/gdb-8.0.1.tar.gz</code></p>
+<p><code>tar xvf gdb-8.0.1.tar.gz</code></p>
+<p><code>cd gdb-8.0.1.tar.gz</code></p>
+<p><code>mkdir build</code></p>
+<p><code>cd build</code></p>
+<p><code>../configure --enable-static --with-python --disable-interprocess-agent --with-lzma</code></p>
+<p><code>make</code></p>
+</blockquote>
+<p>需要拿到离线机器使用，所以这里使用‘–enable-static –disable-interprocess-agent’，期望获得一个静态链接的二进制文件。通过‘–with-python’启用了python调试功能。‘–with-lzma’启用了lzma支持，由于某些发行版分发的二进制文件使用了‘MiniDebugInfo’特性：在二进制文件中存在一个名为‘gnu_debugdata’的特殊区域，该区域保存了经过lzma压缩的额外符号信息。</p>
+<p>如果在configure过程中报错，一般都是缺少一些依赖包，根据提示进行安装就可以了。</p>
+<p>编译完成后，需要的文件都在build/gdb目录内，将他们复制到另一个目录</p>
+<blockquote>
+<p><code>mkdir -p ~/gdb/data-directory</code></p>
+<p><code>cd gdb</code></p>
+<p><code>cp gdb ~/gdb/gdb</code></p>
+<p><code>cp -r data-directory/* ~/gdb/data-directory</code></p>
+<p><code>cd ~/gdb</code></p>
+<p><code>chmod +x ./gdb</code></p>
+</blockquote>
+<p>data-directory目录内保存了gdb需要使用的数据文件。现在就可以使用这个gdb在离线系统上简单调试程序了</p>
+<blockquote>
+<p><code>./gdb --data-directory=./data-directory your-program</code></p>
+</blockquote>
+<p>但是当进入到一些库函数时，会出现错误，因为系统上没有相应的调试信息文件。需要手动部署这些文件，以调试Python为例，首先获取系统中python包的版本</p>
+<blockquote>
+<p><code>yum list installed | grep ^python.x86_64</code></p>
+</blockquote>
+<p>假如得到的信息是‘python.x86_64 2.7.5-58.el7’，去<a href="http://debuginfo.centos.org/7/x86_64/" target="_blank" rel="external">debuginfo.centos.org</a>下载相应的调试信息文件，例如，’python-debuginfo-2.7.5-58.el7.x86_64.rpm‘。</p>
+<p>将该文件解包</p>
+<blockquote>
+<p><code>rpm2cpio python-debuginfo-2.7.5-58.el7.x86_64.rpm | cpio -idmv</code></p>
+</blockquote>
+<p>正常情况下，该文件是通过rpm安装到系统里的，安装后的结构和直接解压出来的结构可能不同，系统目录：</p>
+<blockquote>
+<p>ls -l /usr/lib/debug/</p>
+<p>drwxr-xr-x.  3 root root   64 11月  5 2016 .</p>
+<p>dr-xr-xr-x. 44 root root 4096 10月 28 21:38 ..</p>
+<p>lrwxrwxrwx. 1 root root  7 10月 28 21:21 bin -&gt; usr/bin</p>
+<p>lrwxrwxrwx. 1 root root  7 10月 28 21:21 lib -&gt; usr/lib</p>
+<p>lrwxrwxrwx. 1 root root  9 10月 28 21:21 lib64 -&gt; usr/lib64</p>
+<p>lrwxrwxrwx. 1 root root  8 10月 28 21:21 sbin -&gt; usr/sbin</p>
+<p>drwxr-xr-x. 6 root root 65 10月 28 21:21 usr</p>
+</blockquote>
+<p>解包目录：</p>
+<blockquote>
+<p>ls -al ./usr/lib/debug/</p>
+<p>drwxr-xr-x.   5 buildbot buildbot   46 10月 29 23:26 .</p>
+<p>drwxrwxr-x.   3 buildbot buildbot   19 10月 29 23:26 ..</p>
+<p>drwxr-xr-x. 114 buildbot buildbot 4096 10月 29 23:26 .build-id</p>
+<p>drwxr-xr-x.   2 buildbot buildbot   40 10月 29 23:26 .dwz</p>
+<p>drwxr-xr-x.   4 buildbot buildbot   30 10月 29 23:26 usr</p>
+</blockquote>
+<p>系统目录中的符号链接，解包目录里是没有的，需要手动加上。解包目录里的‘.build-id’文件夹是非常重要的文件夹。</p>
+<p>GDB允许将调试信息和可执行代码分开存放，因为一般情况，调试信息比可执行代码大很多，普通用户不需要调试信息。分开存放很好的解决了此问题。</p>
+<p>GDB支持两种指定调试信息文件的方法：</p>
+<ul>
+<li>可执行文件包含一个‘debug link’，其指定了调试文件的名字。通常调试信息文件的名字是‘executable.debug’，其中，‘executable’是可执行文件的名字（不包括路径）。并且，‘debug link’还包含了可执行文件的CRC32值，GDB可以利用该值判断可执行文件和调试信息文件是否来自相同的build。</li>
+<li>可执行文件包含一个特殊的字符串‘build-id’，该字符串同时也存在于调试信息文件中。调试信息文件的名字可以通过‘build-id’计算出来。</li>
+</ul>
+<p>对于以上两种不同的方式，GDB采用两种方法查找调试信息文件：</p>
+<ul>
+<li>对于‘debug link’方式，GDB先在可执行文件所在目录搜索指定名字的调试信息文件，然后是可执行文件所在目录中名为‘.debug’的子目录里搜索，最后，在所有全局‘debug directory’里的和可执行文件绝对目录名字一样的子目录里搜索。</li>
+<li>对于‘build-id’方式，GDB在每一个全局‘debug directory’里名为‘build-id’的子目录中搜索名为‘nn/nnnnnnnn.debug’的文件（CentOS中该文件是一个符号链接）。</li>
+</ul>
+<p>准备好了以上文件后，还需要最后一个很重要的文件，该文件定义了调试需要用到的GDB命令。该文件位于</p>
+<blockquote>
+<p>./usr/lib/debug/usr/lib64/libpython2.7.so.1.0.debug-gdb.py</p>
+</blockquote>
+<p>将该文件重命名为python-gdb.py，并和其他文件放一起。现在gdb目录的结构是这样的：</p>
+<blockquote>
+<p>gdb</p>
+<p>data-directory</p>
+<p>usr</p>
+<p>python-gdb.py</p>
+</blockquote>
+<p>启动gdb后需要import python-gdb.py，修改PYTHONPATH</p>
+<blockquote>
+<p><code>export PYTHONPATH=&quot;${PYTHONPATH}:${HOME}/gdb&quot;</code></p>
+</blockquote>
+<p>然后启动gdb</p>
+<blockquote>
+<p><code>./gdb --data-directory=./data-directory</code></p>
+</blockquote>
+<p>设置debug文件查找目录，告诉GDB去准备好的解包目录找调试信息</p>
+<blockquote>
+<p><code>set debug-file-directory ./usr/lib/debug/</code></p>
+</blockquote>
+<p>载入python模块，载入自定义GDB命令</p>
+<blockquote>
+<p><code>python import python-gdb</code></p>
+</blockquote>
+<p>然后attach到需要调试的进程就可以了</p>
+<blockquote>
+<p><code>attach pid</code></p>
+</blockquote>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><ul>
+<li><a href="https://sourceware.org/gdb/onlinedocs/gdb/MiniDebugInfo.html#MiniDebugInfo" target="_blank" rel="external">MiniDebugInfo</a></li>
+<li><a href="https://wiki.python.org/moin/BuildStatically" target="_blank" rel="external">Building Python Statically</a></li>
+<li><a href="https://stackoverflow.com/questions/9364685/how-i-can-static-build-gdb-from-source" target="_blank" rel="external">how-i-can-static-build-gdb-from-source</a></li>
+<li><a href="https://stackoverflow.com/questions/18787375/how-do-i-extract-the-contents-of-an-rpm" target="_blank" rel="external">How do I extract the contents of an rpm?</a></li>
+<li><a href="https://sourceware.org/gdb/onlinedocs/gdb/Separate-Debug-Files.html" target="_blank" rel="external">Debugging Information in Separate Files</a></li>
+</ul>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/MongoDB-Data-Migrate/" rel="next" title="MongoDB Data Migration">
+                <i class="fa fa-chevron-left"></i> MongoDB Data Migration
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -340,6 +527,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -549,6 +747,18 @@
       <script id="dsq-count-scr" src="https://mengy.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.mengy.org/debug-python-with-gdb-in-offline-centos/';
+          this.page.identifier = 'debug-python-with-gdb-in-offline-centos/';
+          this.page.title = 'Debugg Python with GDB in off-line CentOS';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mengy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
