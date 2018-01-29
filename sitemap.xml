@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mengy.org/books/index.html</loc>
+    
+    <lastmod>2018-01-29T14:46:10.176Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mengy.org/debug-python-with-gdb-in-offline-centos/</loc>
     
     <lastmod>2017-11-13T15:15:01.227Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://blog.mengy.org/collection/index.html</loc>
     
     <lastmod>2017-11-08T14:22:26.385Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.mengy.org/books/index.html</loc>
-    
-    <lastmod>2017-10-07T14:01:37.973Z</lastmod>
     
   </url>
   
