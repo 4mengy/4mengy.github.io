@@ -412,7 +412,7 @@
 <li>disassemble-and-resynthesise (D&amp;R)。<br>Valgrind 使用这种把machine code先转成IR，IR会通过加入更IR来instrument。IR最后转回machine code执行，原本的code对guest state的所有影响都必须明确地转成IR，因为最后执行的是纯粹由IR转成的machine code。</li>
 <li>copy-and-annotate (C&amp;A)。instructions会被逐字地复制(除了一些 control flow 改变)<br>每个instruction都加上注解描述其影响(annotate)，利用这些描述来帮助做instrumentation<br>通过给每条指令添加一个额外的data structure (DynamoRIO)<br>通过提供相应的获取指令相关信息的API (Intel Pin)<br>这些添加的注解可以指导进行相应的instrument，并且不影响原来的native code的执行效果。</li>
 </ul>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p>本文主要参考了官方的研究论文（ <a href="http://valgrind.org/docs/pubs.html" target="_blank" rel="external">http://valgrind.org/docs/pubs.html</a> ）。</p>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p>本文主要参考了官方的研究论文（ <a href="http://valgrind.org/docs/pubs.html" target="_blank" rel="noopener">http://valgrind.org/docs/pubs.html</a> ）。</p>
 
       
     </div>
@@ -519,7 +519,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -402,12 +402,12 @@
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>copydb &amp; clone 有数据一致性问题不考虑使用。master &amp; slave模式，slave后续还需要进一步操作，并且官方已不推荐部署此模式。Replication Set提供了很多高级特性，是官方现在推荐的部署模式。处理数据迁移时，master &amp; slave和Replication Set比较接近，前者需要进一步处理，后者配置略麻烦，都相当于自动mongodump + oplogreplay，在数据不是很大的情况下，可以配置一个单节点的Replication Set配合mongodump with oplog比较合适。</p>
 <p>oplog有一个非常重要的特性——幂等性（idempotent）。即对一个数据集合，使用oplog中记录的操作重放时，无论被重放多少次，其结果是一样的。举例来说，如果oplog中记录的是一个插入操作，并不会因为你重放了两次，数据库中就得到两条相同的记录。</p>
 <p>还有一种方法是使用文件系统提供的快照功能，比如LVM。</p>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p><a href="https://www.digitalocean.com/community/tutorials/how-to-back-up-restore-and-migrate-a-mongodb-database-on-ubuntu-14-04" target="_blank" rel="external">How To Back Up, Restore, and Migrate a MongoDB Database on Ubuntu 14.04</a></p>
-<p><a href="https://stackoverflow.com/questions/23688043/migrating-mongodb-instances-with-no-down-time" target="_blank" rel="external">Migrating MongoDB instances with no down-time</a></p>
-<p><a href="https://docs.mongodb.com/manual/reference/command/clone/#dbcmd.clone" target="_blank" rel="external">MongoDB Clone</a></p>
-<p><a href="https://docs.mongodb.com/manual/reference/command/copydb/#dbcmd.copydb" target="_blank" rel="external">MongoDB Copydb</a></p>
-<p><a href="https://docs.mongodb.com/manual/replication/" target="_blank" rel="external">MongoDB Replication</a></p>
-<p><a href="https://docs.mongodb.com/manual/core/master-slave/" target="_blank" rel="external">Master Slave Replication</a></p>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p><a href="https://www.digitalocean.com/community/tutorials/how-to-back-up-restore-and-migrate-a-mongodb-database-on-ubuntu-14-04" target="_blank" rel="noopener">How To Back Up, Restore, and Migrate a MongoDB Database on Ubuntu 14.04</a></p>
+<p><a href="https://stackoverflow.com/questions/23688043/migrating-mongodb-instances-with-no-down-time" target="_blank" rel="noopener">Migrating MongoDB instances with no down-time</a></p>
+<p><a href="https://docs.mongodb.com/manual/reference/command/clone/#dbcmd.clone" target="_blank" rel="noopener">MongoDB Clone</a></p>
+<p><a href="https://docs.mongodb.com/manual/reference/command/copydb/#dbcmd.copydb" target="_blank" rel="noopener">MongoDB Copydb</a></p>
+<p><a href="https://docs.mongodb.com/manual/replication/" target="_blank" rel="noopener">MongoDB Replication</a></p>
+<p><a href="https://docs.mongodb.com/manual/core/master-slave/" target="_blank" rel="noopener">Master Slave Replication</a></p>
 
       
     </div>
@@ -518,7 +518,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
