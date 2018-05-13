@@ -74,7 +74,7 @@
 <meta property="og:site_name" content="Mengy">
 <meta property="og:description" content="最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。 该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。 模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-04T16:15:23.102Z">
+<meta property="og:updated_time" content="2018-05-13T00:58:58.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Deadlock caused by forking a multithreaded process">
 <meta name="twitter:description" content="最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。 该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。 模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。">
@@ -437,6 +437,7 @@
 <li><a href="https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods" target="_blank" rel="noopener">python multiprocessing doc</a></li>
 <li><a href="https://stackoverflow.com/questions/46439740/safe-to-call-multiprocessing-from-a-thread-in-python" target="_blank" rel="noopener">Safe to call multiprocessing from a thread in Python？</a></li>
 <li><a href="https://sites.google.com/site/embeddedmonologue/home/c-programming/reentrancy-thread-safe-asynchronous-signal-safe-interrupt-safe-and-cancellation-safe" target="_blank" rel="noopener">reentrancy, thread safe, asynchronous signal safe, interrupt safe and cancellation safe</a></li>
+<li><a href="http://www.linuxprogrammingblog.com/threads-and-fork-think-twice-before-using-them" target="_blank" rel="noopener">Threads and fork(): think twice before mixing them</a></li>
 </ul>
 
       
