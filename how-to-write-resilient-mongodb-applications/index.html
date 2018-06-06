@@ -67,17 +67,17 @@
 
 
 
-<meta name="description" content="如何编写弹性MongoDB应用程序前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气">
+<meta name="description" content="前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气的MongoDB客户。 他来到我们">
 <meta property="og:type" content="article">
 <meta property="og:title" content="how-to-write-resilient-mongodb-applications">
 <meta property="og:url" content="http://blog.mengy.org/how-to-write-resilient-mongodb-applications/index.html">
 <meta property="og:site_name" content="Mengy">
-<meta property="og:description" content="如何编写弹性MongoDB应用程序前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气">
+<meta property="og:description" content="前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气的MongoDB客户。 他来到我们">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-06T00:01:55.341Z">
+<meta property="og:updated_time" content="2018-06-06T00:04:59.088Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="how-to-write-resilient-mongodb-applications">
-<meta name="twitter:description" content="如何编写弹性MongoDB应用程序前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气">
+<meta name="twitter:description" content="前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气的MongoDB客户。 他来到我们">
 
 
 
@@ -371,7 +371,7 @@
       
 
       
-        <h1 id="如何编写弹性MongoDB应用程序"><a href="#如何编写弹性MongoDB应用程序" class="headerlink" title="如何编写弹性MongoDB应用程序"></a>如何编写弹性MongoDB应用程序</h1><p>前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能<a href="https://emptysqua.re/blog/driver-features-for-mongodb-3-6/#retryable-writes" target="_blank" rel="noopener">Retryable Writes</a>取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。</p>
+        <p>前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能<a href="https://emptysqua.re/blog/driver-features-for-mongodb-3-6/#retryable-writes" target="_blank" rel="noopener">Retryable Writes</a>取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。</p>
 <p>有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气的MongoDB客户。</p>
 <p>他来到我们的“MongoDB Office Hours”办公室，他有一个问题：“我怎样才能使我的应用程序在网络错误，中断和其他异常情况下具有弹性？我可以每次重试操作直到成功？“他要求知道为什么我们没有发布一个适用于所有应用程序的简单明智的策略。</p>
 <p>这个人，我会叫他Ian，很不高兴，我也帮不了他。我的内疚已经让我忘记了那天的细节。我们坐在一间没有窗户的房间里，这是我们唯一可以在我们的小办公室聊天的自由空间。这里有一个讨厌的荧光灯。我们并排坐在桌子的边缘，因为房间没有椅子。在Ian的眼睛下有深深的黑眼圈，就像他已经为这个问题担心了一整晚。 “我如何编写弹性代码？”</p>
