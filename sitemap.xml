@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mengy.org/how-to-write-resilient-mongodb-applications/</loc>
+    
+    <lastmod>2018-06-06T00:01:55.341Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mengy.org/books/index.html</loc>
     
     <lastmod>2018-05-15T23:45:17.571Z</lastmod>

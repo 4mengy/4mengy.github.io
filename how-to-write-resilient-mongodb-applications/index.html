@@ -67,13 +67,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mengy">
-<meta property="og:url" content="http://blog.mengy.org/index.html">
+<meta name="description" content="如何编写弹性MongoDB应用程序前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气">
+<meta property="og:type" content="article">
+<meta property="og:title" content="how-to-write-resilient-mongodb-applications">
+<meta property="og:url" content="http://blog.mengy.org/how-to-write-resilient-mongodb-applications/index.html">
 <meta property="og:site_name" content="Mengy">
+<meta property="og:description" content="如何编写弹性MongoDB应用程序前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-06T00:01:55.341Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mengy">
+<meta name="twitter:title" content="how-to-write-resilient-mongodb-applications">
+<meta name="twitter:description" content="如何编写弹性MongoDB应用程序前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能Retryable Writes取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。 有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气">
 
 
 
@@ -103,13 +107,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.mengy.org/"/>
+  <link rel="canonical" href="http://blog.mengy.org/how-to-write-resilient-mongodb-applications/"/>
 
 
 
 
 
-  <title>Mengy</title>
+  <title>how-to-write-resilient-mongodb-applications | Mengy</title>
   
 
 
@@ -137,8 +141,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -275,9 +278,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -307,9 +310,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/how-to-write-resilient-mongodb-applications/" itemprop="url">how-to-write-resilient-mongodb-applications</a></h2>
+          <h2 class="post-title" itemprop="name headline">how-to-write-resilient-mongodb-applications</h2>
         
 
         <div class="post-meta">
@@ -370,9 +371,7 @@
       
 
       
-        
-          
-            <h1 id="如何编写弹性MongoDB应用程序"><a href="#如何编写弹性MongoDB应用程序" class="headerlink" title="如何编写弹性MongoDB应用程序"></a>如何编写弹性MongoDB应用程序</h1><p>前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能<a href="https://emptysqua.re/blog/driver-features-for-mongodb-3-6/#retryable-writes" target="_blank" rel="noopener">Retryable Writes</a>取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。</p>
+        <h1 id="如何编写弹性MongoDB应用程序"><a href="#如何编写弹性MongoDB应用程序" class="headerlink" title="如何编写弹性MongoDB应用程序"></a>如何编写弹性MongoDB应用程序</h1><p>前言：本文翻译自MongoDB团队成员A. Jesse Jiryu Davis的博客文章。文章描述了在遇到错误时如何安全的进行重试。虽然这项技术已被MongoDB 3.6的新内置功能<a href="https://emptysqua.re/blog/driver-features-for-mongodb-3-6/#retryable-writes" target="_blank" rel="noopener">Retryable Writes</a>取代。 可重写的写操作比这里描述的技术简单得多。但是作者解决问题的方式还是能给我们一些启发。</p>
 <p>有一次，在2012年初的一个寒冬午后，我遇到了一位非常生气的MongoDB客户。</p>
 <p>他来到我们的“MongoDB Office Hours”办公室，他有一个问题：“我怎样才能使我的应用程序在网络错误，中断和其他异常情况下具有弹性？我可以每次重试操作直到成功？“他要求知道为什么我们没有发布一个适用于所有应用程序的简单明智的策略。</p>
 <p>这个人，我会叫他Ian，很不高兴，我也帮不了他。我的内疚已经让我忘记了那天的细节。我们坐在一间没有窗户的房间里，这是我们唯一可以在我们的小办公室聊天的自由空间。这里有一个讨厌的荧光灯。我们并排坐在桌子的边缘，因为房间没有椅子。在Ian的眼睛下有深深的黑眼圈，就像他已经为这个问题担心了一整晚。 “我如何编写弹性代码？”</p>
@@ -549,8 +548,6 @@
 <li><a href="https://emptysqua.re/blog/driver-features-for-mongodb-3-6/#retryable-writes" target="_blank" rel="noopener">Retryable Writes</a></li>
 </ul>
 
-          
-        
       
     </div>
     
@@ -567,149 +564,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/deadlock-caused-by-forking-a-multithreaded-process/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mengy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/deadlock-caused-by-forking-a-multithreaded-process/" itemprop="url">Deadlock caused by forking a multithreaded process</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T21:46:25+08:00">
-                2018-05-02
-              </time>
+              <a href="/deadlock-caused-by-forking-a-multithreaded-process/" rel="next" title="Deadlock caused by forking a multithreaded process">
+                <i class="fa fa-chevron-left"></i> Deadlock caused by forking a multithreaded process
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/deadlock-caused-by-forking-a-multithreaded-process/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="deadlock-caused-by-forking-a-multithreaded-process/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。</p>
-<p>该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。</p>
-<p>模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/deadlock-caused-by-forking-a-multithreaded-process/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -719,557 +595,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/debug-python-with-gdb-in-offline-centos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mengy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/debug-python-with-gdb-in-offline-centos/" itemprop="url">Debug Python with GDB in off-line CentOS</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-30T02:57:07+08:00">
-                2017-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/debug-python-with-gdb-in-offline-centos/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="debug-python-with-gdb-in-offline-centos/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>GDB不仅可以调试C/C++程序，它还可以调试Python等程序，是非常重要和有力的开发工具之一。大部分情况下，都可以直接安装发行版提供的gdb来调试程序，但是，某些情况下需要自己编译，例如，机器无法上网；甚至没有权限修改系统，无法安装软件。下面以CentOS为例，介绍如何在离线并且没有全部权限的情况下使用GDB调试Python程序。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/debug-python-with-gdb-in-offline-centos/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/MongoDB-Data-Migrate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mengy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/MongoDB-Data-Migrate/" itemprop="url">MongoDB Data Migration</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T09:25:59+08:00">
-                2017-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/MongoDB-Data-Migrate/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="MongoDB-Data-Migrate/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <ul>
-<li><p>MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。</p>
-</li>
-<li><p>备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。</p>
-</li>
-<li><p>需要考虑数据一致性的问题。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/MongoDB-Data-Migrate/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/Inverted-Index-in-the-Luence/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mengy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Inverted-Index-in-the-Luence/" itemprop="url">Inverted Index in the Luence</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-29T10:50:39+08:00">
-                2017-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/Inverted-Index-in-the-Luence/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="Inverted-Index-in-the-Luence/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/Inverted-Index-in-the-Luence/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/how-valgrind-work/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mengy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/how-valgrind-work/" itemprop="url">Valgrind工作原理简介</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-24T14:10:39+08:00">
-                2016-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/how-valgrind-work/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="how-valgrind-work/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Valgrind是一款用于构建内存调试、内存泄露检测以及性能分析的软件开发框架，它是一个由来自全世界的开发者组织合作开发得到的开源软件。他的初始作者Julian Seward在2006年获得第二届Google-O’Reilly开源代码奖。Valgrind这个名字取自北欧神话中英灵殿的入口。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/how-valgrind-work/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -1277,6 +607,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -1486,6 +827,18 @@
       <script id="dsq-count-scr" src="https://mengy.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.mengy.org/how-to-write-resilient-mongodb-applications/';
+          this.page.identifier = 'how-to-write-resilient-mongodb-applications/';
+          this.page.title = 'how-to-write-resilient-mongodb-applications';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mengy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
