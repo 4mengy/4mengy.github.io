@@ -108,24 +108,24 @@
 
 
 
-  <meta name="description" content="最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。 该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。 模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。">
+  <meta name="description" content="在类Unix系统中，pid是1的进程是一个很特殊的进程。类Unix操作系统的进程管理采用树形结构，用户空间中的其他进程都直接或间接是pid 1进程的子进程。在Mac OSX中该进程是launchd，Linux中有多种选择，例如systemd，一般将其称作init进程。如果init进程意外退出，内核会panic。为了避免意外操作，pid为1的进程不会使用系统默认的信号处理函数，要处理信号，必须显式指">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Deadlock caused by forking a multithreaded process">
-<meta property="og:url" content="http://blog.mengy.org/deadlock-caused-by-forking-a-multithreaded-process/index.html">
+<meta property="og:title" content="Docker:pid1 zombie and signal problem">
+<meta property="og:url" content="http://blog.mengy.org/docker-pid1-zombie-and-signal-problem/index.html">
 <meta property="og:site_name" content="Mengy">
-<meta property="og:description" content="最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。 该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。 模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。">
+<meta property="og:description" content="在类Unix系统中，pid是1的进程是一个很特殊的进程。类Unix操作系统的进程管理采用树形结构，用户空间中的其他进程都直接或间接是pid 1进程的子进程。在Mac OSX中该进程是launchd，Linux中有多种选择，例如systemd，一般将其称作init进程。如果init进程意外退出，内核会panic。为了避免意外操作，pid为1的进程不会使用系统默认的信号处理函数，要处理信号，必须显式指">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-13T00:58:58.000Z">
+<meta property="og:updated_time" content="2018-07-02T16:51:58.584Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Deadlock caused by forking a multithreaded process">
-<meta name="twitter:description" content="最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。 该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。 模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。">
+<meta name="twitter:title" content="Docker:pid1 zombie and signal problem">
+<meta name="twitter:description" content="在类Unix系统中，pid是1的进程是一个很特殊的进程。类Unix操作系统的进程管理采用树形结构，用户空间中的其他进程都直接或间接是pid 1进程的子进程。在Mac OSX中该进程是launchd，Linux中有多种选择，例如systemd，一般将其称作init进程。如果init进程意外退出，内核会panic。为了避免意外操作，pid为1的进程不会使用系统默认的信号处理函数，要处理信号，必须显式指">
 
 
 
 
 
 
-  <link rel="canonical" href="http://blog.mengy.org/deadlock-caused-by-forking-a-multithreaded-process/"/>
+  <link rel="canonical" href="http://blog.mengy.org/docker-pid1-zombie-and-signal-problem/"/>
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>Deadlock caused by forking a multithreaded process | Mengy</title>
+  <title>Docker:pid1 zombie and signal problem | Mengy</title>
   
 
 
@@ -336,7 +336,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/deadlock-caused-by-forking-a-multithreaded-process/">
+    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/docker-pid1-zombie-and-signal-problem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mengy">
@@ -353,7 +353,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Deadlock caused by forking a multithreaded process
+          <h2 class="post-title" itemprop="name headline">Docker:pid1 zombie and signal problem
               
             
           </h2>
@@ -378,7 +378,7 @@
                 
               
 
-              <time title="Created: 2018-05-02 21:46:25" itemprop="dateCreated datePublished" datetime="2018-05-02T21:46:25+08:00">2018-05-02</time>
+              <time title="Created: 2018-06-09 18:14:09" itemprop="dateCreated datePublished" datetime="2018-06-09T18:14:09+08:00">2018-06-09</time>
             
 
             
@@ -395,7 +395,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-05-13 08:58:58" itemprop="dateModified" datetime="2018-05-13T08:58:58+08:00">2018-05-13</time>
+                <time title="Modified: 2018-07-03 00:51:58" itemprop="dateModified" datetime="2018-07-03T00:51:58+08:00">2018-07-03</time>
               
             
           </span>
@@ -409,10 +409,10 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/deadlock-caused-by-forking-a-multithreaded-process/#comments" itemprop="discussionUrl">
+                <a href="/docker-pid1-zombie-and-signal-problem/#comments" itemprop="discussionUrl">
                 
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="deadlock-caused-by-forking-a-multithreaded-process/" itemprop="commentCount"></span>
+                        data-disqus-identifier="docker-pid1-zombie-and-signal-problem/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -440,73 +440,59 @@
       
 
       
-        <p>最近生产环境的一个模块突然卡住了，模块的作者已经去其他组了，没办法只能自己查问题了🤣。</p>
-<p>该模块使用python的logging标准库记录日志，自定义kafka作为handler，日志通过kafka发送到Elasticsearch，然后就是ELK日志处理了。</p>
-<p>模块为了提高吞吐，内部使用了多进程，问题恰恰就出现在了这里。<br><a id="more"></a></p>
-<p>使用GDB attach到卡死的进程，执行py-bt命令，输出如下：</p>
+        <p>在类Unix系统中，pid是1的进程是一个很特殊的进程。类Unix操作系统的进程管理采用树形结构，用户空间中的其他进程都直接或间接是pid 1进程的子进程。在Mac OSX中该进程是launchd，Linux中有多种选择，例如systemd，一般将其称作init进程。如果init进程意外退出，内核会panic。为了避免意外操作，pid为1的进程不会使用系统默认的信号处理函数，要处理信号，必须显式指定信号处理函数。</p>
+<a id="more"></a>
+<p>init进程还承担着一些其他职责。由于所有用户空间的进程都是其子进程，所以，当进程结束时，其需要处理进程的资源回收。另外，某些情况下，父进程可能先于子进程退出，此时子进程没有了父进程变成所谓的‘孤儿’进程，init负责将此类进程收养为自己的子进程，并负责后续的资源回收。</p>
+<p>Linux pid namespace技术可以实现pid资源的隔离，广泛应用于各种容器技术中，例如docker。但是在docker的早期版本中对init进程处理不当引起了一些问题，尤其是当多进程程序运行在容器中时。</p>
+<p>容器启动时，运行的程序默认会被分配为pid 1，但是一般情况下，我们都没有假设我们的程序会以pid 1来运行。</p>
+<p>这里可能面临僵尸进程的问题。看下面的例子，该程序fork了两次，一共创建了3个进程：父亲、儿子和孙子进程。儿子进程先结束，由于父进程没有任何处理，儿子进程变成僵尸进程，孙子进程变成孤儿进程，等待被收养；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;unistd.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    pid_t pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">"[C] child process.\n"</span>);</span><br><span class="line">        //avoid buffer get into child process</span><br><span class="line">        fflush(stdout);</span><br><span class="line">        pid_t pid2 = fork();</span><br><span class="line">        <span class="keyword">if</span> (pid2 == <span class="number">0</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"[C] 2nd fork, child process.\n"</span>);</span><br><span class="line">            sleep(<span class="number">15</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"[P] 2nd fork, child process pid: %d.\n"</span>, pid2);</span><br><span class="line">            sleep(<span class="number">8</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">"[P] child process pid: %d.\n"</span>, pid);</span><br><span class="line">        sleep(<span class="number">20</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码进行编译后，生成的可执行文件位于/tmp/test/a.out。将该目录映射到容器的/root/目录。</p>
 <blockquote>
-<p>Traceback (most recent call first):</p>
-<p>File “/usr/lib64/python2.7/multiprocessing/forking.py”, line 135, in poll</p>
-<p>pid, sts = os.waitpid(self.pid, flag)</p>
-<p>File “/usr/lib64/python2.7/multiprocessing/forking.py”, line 154, in wait</p>
-<p>return self.poll(0)</p>
-<p>File “/usr/lib64/python2.7/multiprocessing/process.py”, line 145, in join</p>
-<p>res = self._popen.wait(timeout)</p>
-<p>File “parser/parser_main.py”, line 76, in data_parse</p>
-<p>process.join()</p>
+<p>docker run -itd –name foo –rm -v /tmp/test/:/root/ ubuntu /root/a.out</p>
 </blockquote>
-<p>主进程里使用multiprocessing模块创建多进程执行任务，这里主进程在等待子进程执行结束。</p>
-<p>阅读multiprocessing模块的源代码，可以发现其创建子进程时调用了<code>os.fork()</code>函数，该函数是python os模块对系统调用fork的封装。</p>
-<p>子进程的输出：</p>
+<p>以上命令执行后，在另一个窗口执行</p>
 <blockquote>
-<p>Traceback (most recent call first):</p>
-<p>Waiting for the GIL</p>
-<p>File “sdk/python-lib/kafka/producer/record_accumulator.py”, line 223, in append</p>
-<p>with self._tp_locks[tp]:</p>
-<p>File “sdk/python-lib/kafka/producer/kafka.py”, line 516, in send</p>
-<p>self.config[‘max_block_ms’])</p>
-<p>File “sdk/python-lib/elk_logging/handlers/kafka.py”, line 37, in emit</p>
-<p>self.format(record).encode(‘utf-8’))</p>
+<p>docker exec -it foo /bin/bash</p>
 </blockquote>
-<p>elk_logging模块自定义了kafka handler，模块导入时通过logging.config.dictConfig()配置logging模块。kafak发送消息时获取不到锁<code>self._tp_lock[tp]</code>，然后一直等待。</p>
-<p>在Google上搜索“kafka self._tp_lock deadlock”没有发现有价值的信息，基本排除是kafka库的bug，如果是kafka库的bug，网上不太可能一点线索也没有。</p>
-<p>前文我们提到这里使用了fork创建子进程，当内核执行fork时，生成的子进程是父进程的副本，子进程获得父进程的数据空间、堆和栈的副本（这里是子进程自己拥有的副本，并不与父进程共享这些存储空间。很多实现使用了写时复制技术，一开始这些区域被父子进程共享，如果任意一个进程修改这些区域，则内核只为修改的那块内存制作一个副本，通常是虚拟内存的一页）。</p>
-<p>在Linux系统中调用fork，创建的子进程中只有一个线程——父进程中调用fork函数的线程。</p>
-<blockquote>
-<p>Note the following further points:</p>
+<p>这样会打开一个容器的bash界面，通过它可以观察容器内程序的执行情况。<br>一开始三个进程都在执行。</p>
+<pre> PPID    PID   PGID    SID TTY       TPGID STAT   UID   TIME COMMAND
+     0      8      8      8 pts/1        15 Ss       0   0:00 /bin/bash
+     8     15     15      8 pts/1        15 R+       0   0:00  \_ ps -jxf
+     0      1      1      1 pts/0         1 Ss+      0   0:00 /root/a.out
+     1      6      1      1 pts/0         1 S+       0   0:00 /root/a.out
+     6      7      1      1 pts/0         1 S+       0   0:00  \_ /root/a.out</pre>
+
+<p>pid 6儿子进程结束，僵尸状态，pid 7孙子进程被init进程收养，即pid 1进程。</p>
+<pre>  PPID    PID   PGID    SID TTY       TPGID STAT   UID   TIME COMMAND
+     0      8      8      8 pts/1        22 Ss       0   0:00 /bin/bash
+     8     22     22      8 pts/1        22 R+       0   0:00  \_ ps -jxf
+     0      1      1      1 pts/0         1 Ss+      0   0:00 /root/a.out
+     1      6      1      1 pts/0         1 Z+       0   0:00 [a.out] <defunct>
+     1      7      1      1 pts/0         1 S+       0   0:00 /root/a.out</defunct></pre>
+
+<p>pid 7孙子进程结束，由于pid 1进程没有对其回收资源，故也进入僵尸状态。</p>
+<pre>  PPID    PID   PGID    SID TTY       TPGID STAT   UID   TIME COMMAND
+     0      8      8      8 pts/1        23 Ss       0   0:00 /bin/bash
+     8     23     23      8 pts/1        23 R+       0   0:00  \_ ps -jxf
+     0      1      1      1 pts/0         1 Ss+      0   0:00 /root/a.out
+     1      6      1      1 pts/0         1 Z+       0   0:00 [a.out] <defunct>
+     1      7      1      1 pts/0         1 Z+       0   0:00 [a.out] <defunct></defunct></defunct></pre>
+
+<p>最后当父进程结束后，整个容器结束，所有资源被清理。</p>
+<p>解决以上问题，需要容器内部运行一个有效的init进程，使用systemd这种高级程序会使容器臃肿，可以使用一些很轻便的实现，甚至自己写一个满足自己需求的程序。</p>
+<p>现有的解决方案：</p>
 <ul>
-<li>The child process is created with a single thread—the one that called fork().  The entire virtual address space of the parent is replicated in the child, including the states of mutexes, condition variables, and other pthreads objects; the use of pthread_atfork(3) may be helpful for dealing with problems that this can cause.</li>
+<li>使用<a href="http://phusion.github.io/baseimage-docker/" target="_blank" rel="noopener">baseimage-docker</a></li>
+<li>使用docker内置的init工具<a href="https://github.com/krallin/tini" target="_blank" rel="noopener">tini</a>，在docker run命令加上参数–init。</li>
 </ul>
-</blockquote>
-<p>也不是所有的系统都是这样，Solaris系统libthread库提供的fork函数会“复制“所有线程。</p>
-<blockquote>
-<p>Solaris libthread supports both fork() and fork1(). The fork() call has “fork-all” semantics–it duplicates everything in the process, including threads and LWPs, creating a true clone of the parent. The fork1() call creates a clone that has only one thread; the process state and address space are duplicated, but only the calling thread is cloned.</p>
-<p>POSIX libpthread supports only fork(), which has the same semantics as fork1() in Solaris threads.</p>
-</blockquote>
-<p>POSIX标准定义的行为是fork只“复制”一个线程。</p>
-<p>那么这些与上面的死锁有什么关系？python标准库logging模块在创建logger时会调用到以下代码，可以看到一个logger只会实例化一次，对应的handler和formatter等也只会实例化一次。</p>
-<p>logging/__init__.py manager.getLogger(name)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">_acquireLock()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">if</span> name <span class="keyword">in</span> self.loggerDict:</span><br><span class="line">        rv = self.loggerDict[name]</span><br><span class="line">        <span class="keyword">if</span> isinstance(rv, PlaceHolder):</span><br><span class="line">            ph = rv</span><br><span class="line">            rv = (self.loggerClass <span class="keyword">or</span> _loggerClass)(name)</span><br><span class="line">            rv.manager = self</span><br><span class="line">            self.loggerDict[name] = rv</span><br><span class="line">            self._fixupChildren(ph, rv)</span><br><span class="line">            self._fixupParents(rv)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = (self.loggerClass <span class="keyword">or</span> _loggerClass)(name)</span><br><span class="line">        rv.manager = self</span><br><span class="line">        self.loggerDict[name] = rv</span><br><span class="line">        self._fixupParents(rv)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    _releaseLock()</span><br></pre></td></tr></table></figure></p>
-<p>如果自定义了handler，配置logging模块时会导入指定的handler class，并实例化。</p>
-<p>logging/config.py DictConfigurator.configure_handler()<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">'()'</span> <span class="keyword">in</span> config:</span><br><span class="line">    c = config.pop(<span class="string">'()'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> callable(c):</span><br><span class="line">        c = self.resolve(c)</span><br><span class="line">    factory = c</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    cname = config.pop(<span class="string">'class'</span>)</span><br><span class="line">    klass = self.resolve(cname)</span><br><span class="line">    factory = klass</span><br><span class="line">props = config.pop(<span class="string">'.'</span>, <span class="keyword">None</span>)</span><br><span class="line">kwargs = dict([(k, config[k]) <span class="keyword">for</span> k <span class="keyword">in</span> config <span class="keyword">if</span> valid_ident(k)])</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    result = factory(**kwargs)</span><br><span class="line"><span class="keyword">except</span> TypeError <span class="keyword">as</span> te:</span><br><span class="line">    <span class="keyword">if</span> <span class="string">"'stream'"</span> <span class="keyword">not</span> <span class="keyword">in</span> str(te):</span><br><span class="line">        <span class="keyword">raise</span></span><br><span class="line">    kwargs[<span class="string">'strm'</span>] = kwargs.pop(<span class="string">'stream'</span>)</span><br><span class="line">    result = factory(**kwargs)</span><br></pre></td></tr></table></figure></p>
-<p>父进程和fork出来的子进程使用的时相同的对象实例，相同的logger，相同的kafka handler。</p>
-<p>kafka producer发送消息是多线程异步的。KafkaProducer实例化时会启动一个消息发送线程。有消息过来后，先通过RecordAccumulator类实例将消息追加到内部list，然后唤醒self._sender发送线程，发送线程通过RecordAccumulator类实例检查哪些可以发送，整个过程RecordAccumulator类实例维护了topic+partition相关的锁。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, **configs)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    self._accumulator = RecordAccumulator(message_version=message_version, metrics=self._metrics, **self.config)</span><br><span class="line">    self._sender = Sender(client, self._metadata,</span><br><span class="line">                          self._accumulator, self._metrics,</span><br><span class="line">                          guarantee_message_order=guarantee_message_order,</span><br><span class="line">                          **self.config)</span><br><span class="line">    self._sender.daemon = <span class="keyword">True</span></span><br><span class="line">    self._sender.start()</span><br><span class="line">    self._closed = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">    self._cleanup = self._cleanup_factory()</span><br><span class="line">    atexit.register(self._cleanup)</span><br><span class="line">    log.debug(<span class="string">"Kafka producer started"</span>)</span><br></pre></td></tr></table></figure></p>
-<p>如果fork时RecordAccumulator类实例中某个topic+partition的锁还没有释放，子进程中该锁永远不会被释放，因为没有了发送线程，如果子进程中恰好向同一个topic和同一个partition发送消息就会死锁。</p>
-<p>由于子进程不会常驻在后台，所以满足上述条件还是比较难的，从表现上来看，5个月里发生了一次死锁。</p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>避免这种问题，最好的办法就是不要fork一个多线程进程。</p>
-<p>python的标准库logging模块曾经因为类似的原因出过<a href="https://bugs.python.org/issue6721" target="_blank" rel="noopener">问题</a>。现在<a href="https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods" target="_blank" rel="noopener">官方文档</a>已经指出：</p>
-<blockquote>
-<p>Note that safely forking a multithreaded process is problematic.</p>
-</blockquote>
-<p>Google甚至还创建过一个项目<a href="https://github.com/google/python-atfork" target="_blank" rel="noopener">python-atfork</a>，模仿pthread_atfork，可以注册函数，保正多线程的情况下可以安全的fork。当然，该项目已经被废弃了。</p>
-<p>如果使用较新的python版本（3.5+ ？）可以指定multiprocessing模块创建进程的方式，可以尝试spawn方式。</p>
 <h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><ul>
-<li>UNIX环境高级编程</li>
-<li><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">Linux fork manual</a></li>
-<li><a href="https://docs.oracle.com/cd/E19455-01/806-5257/6je9h0341/index.html" target="_blank" rel="noopener">Special Issues for fork() and Solaris Threads</a></li>
-<li><a href="https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods" target="_blank" rel="noopener">python multiprocessing doc</a></li>
-<li><a href="https://stackoverflow.com/questions/46439740/safe-to-call-multiprocessing-from-a-thread-in-python" target="_blank" rel="noopener">Safe to call multiprocessing from a thread in Python？</a></li>
-<li><a href="https://sites.google.com/site/embeddedmonologue/home/c-programming/reentrancy-thread-safe-asynchronous-signal-safe-interrupt-safe-and-cancellation-safe" target="_blank" rel="noopener">reentrancy, thread safe, asynchronous signal safe, interrupt safe and cancellation safe</a></li>
-<li><a href="http://www.linuxprogrammingblog.com/threads-and-fork-think-twice-before-using-them" target="_blank" rel="noopener">Threads and fork(): think twice before mixing them</a></li>
+<li><a href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/" target="_blank" rel="noopener">Docker and the pid 1zombie reaping problem</a></li>
+<li><a href="https://stackoverflow.com/questions/49162358/docker-init-zombies-why-does-it-matter" target="_blank" rel="noopener">Docker - init, zombies - why does it matter?</a></li>
+<li><a href="https://hackernoon.com/the-curious-case-of-pid-namespaces-1ce86b6bc900" target="_blank" rel="noopener">The Curious Case of Pid Namespaces</a></li>
+<li><a href="https://www.fpcomplete.com/blog/2016/10/docker-demons-pid1-orphans-zombies-signals" target="_blank" rel="noopener">DOCKER DEMONS: PID-1, ORPHANS, ZOMBIES, AND SIGNALS</a></li>
+<li><a href="https://github.com/moby/moby/issues/2838" target="_blank" rel="noopener">Cannot kill or detach a docker container using Ctrl-C or Ctrl-\</a></li>
+<li><a href="http://blog.mengy.org/docker-pid1-zombie-and-signal-problem/">My process became PID 1 and now signals behave strangely</a></li>
 </ul>
 
       
@@ -535,8 +521,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/debug-python-with-gdb-in-offline-centos/" rel="next" title="Debug Python with GDB in off-line CentOS">
-                <i class="fa fa-chevron-left"></i> Debug Python with GDB in off-line CentOS
+              <a href="/how-to-write-resilient-mongodb-applications/" rel="next" title="how to write resilient mongodb applications">
+                <i class="fa fa-chevron-left"></i> how to write resilient mongodb applications
               </a>
             
           </div>
@@ -544,10 +530,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/how-to-write-resilient-mongodb-applications/" rel="prev" title="how to write resilient mongodb applications">
-                how to write resilient mongodb applications <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -680,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">1.</span> <span class="nav-text">后记</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ref"><span class="nav-number"></span> <span class="nav-text">Ref</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ref"><span class="nav-number">1.</span> <span class="nav-text">Ref</span></a></li></ol></div>
             
 
           </div>
@@ -836,9 +818,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://blog.mengy.org/deadlock-caused-by-forking-a-multithreaded-process/';
-        this.page.identifier = 'deadlock-caused-by-forking-a-multithreaded-process/';
-        this.page.title = 'Deadlock caused by forking a multithreaded process';
+        this.page.url = 'http://blog.mengy.org/docker-pid1-zombie-and-signal-problem/';
+        this.page.identifier = 'docker-pid1-zombie-and-signal-problem/';
+        this.page.title = 'Docker:pid1 zombie and signal problem';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
