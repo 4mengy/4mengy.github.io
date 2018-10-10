@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mengy.org/books/index.html</loc>
+    
+    <lastmod>2018-10-10T16:44:22.734Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mengy.org/Why-numbering-should-start-at-zero/</loc>
     
     <lastmod>2018-09-08T14:03:01.295Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://blog.mengy.org/how-to-write-resilient-mongodb-applications/</loc>
     
     <lastmod>2018-06-06T13:36:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.mengy.org/books/index.html</loc>
-    
-    <lastmod>2018-05-15T23:45:17.000Z</lastmod>
     
   </url>
   
@@ -58,14 +58,14 @@
   </url>
   
   <url>
-    <loc>http://blog.mengy.org/MongoDB-Data-Migrate/</loc>
+    <loc>http://blog.mengy.org/how-valgrind-work/</loc>
     
     <lastmod>2017-09-27T14:07:04.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.mengy.org/how-valgrind-work/</loc>
+    <loc>http://blog.mengy.org/MongoDB-Data-Migrate/</loc>
     
     <lastmod>2017-09-27T14:07:04.000Z</lastmod>
     
