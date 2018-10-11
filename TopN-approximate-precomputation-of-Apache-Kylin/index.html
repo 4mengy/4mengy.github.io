@@ -121,7 +121,7 @@
 <meta property="og:image" content="http://blog.mengy.org/images/2.png">
 <meta property="og:image" content="http://blog.mengy.org/images/3.png">
 <meta property="og:image" content="http://blog.mengy.org/images/4.png">
-<meta property="og:updated_time" content="2018-10-11T17:12:54.812Z">
+<meta property="og:updated_time" content="2018-10-11T17:17:31.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Apache Kylin的Top-N近似预计算">
 <meta name="twitter:description" content="在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。">
@@ -385,7 +385,7 @@
                 
               
 
-              <time title="Created: 2018-10-12 00:43:18 / Modified: 01:12:54" itemprop="dateCreated datePublished" datetime="2018-10-12T00:43:18+08:00">2018-10-12</time>
+              <time title="Created: 2018-10-12 00:43:18 / Modified: 01:17:31" itemprop="dateCreated datePublished" datetime="2018-10-12T00:43:18+08:00">2018-10-12</time>
             
 
             
@@ -435,7 +435,7 @@
       
 
       
-        <p>在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。<br>在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。<br>但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。</p>
+        <p>在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。</p>
 <a id="more"></a>
 <p>Apache Kylin是一个开源的分布式分析引擎，提供Hadoop之上的SQL查询接口及多维分析（OLAP）能力以支持超大规模数据。它能在亚秒内查询巨大的数据集 。本文将详细介绍Apache Kylin 1.5中的新功能： Top-N预计算。</p>
 <p>大家都听过二八定律，这是在很多领域存在的规律，例如世界上20%的人占有了超过80%的财富；20%最受欢迎的商品，贡献超过了80%的销售额等等。 二八定律背后的规律是Zipf分布法则，它是美国学者G.K.齐普夫在统计英文单词出现频率时发现的规律。简单说就是如果把频率出现最高的单词的频率看作是1的话，第二个出现的频率是二分之一，第三个是三分之一，依此类推，出现的频率是它排名的某次幂分之一。</p>
