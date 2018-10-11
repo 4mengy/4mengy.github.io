@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mengy.org/TopN-approximate-precomputation-of-Apache-Kylin/</loc>
+    
+    <lastmod>2018-10-11T17:12:54.812Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mengy.org/books/index.html</loc>
     
     <lastmod>2018-10-10T16:44:22.734Z</lastmod>
@@ -51,13 +58,6 @@
   </url>
   
   <url>
-    <loc>http://blog.mengy.org/Inverted-Index-in-the-Luence/</loc>
-    
-    <lastmod>2017-09-27T14:07:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.mengy.org/how-valgrind-work/</loc>
     
     <lastmod>2017-09-27T14:07:04.000Z</lastmod>
@@ -66,6 +66,13 @@
   
   <url>
     <loc>http://blog.mengy.org/MongoDB-Data-Migrate/</loc>
+    
+    <lastmod>2017-09-27T14:07:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.mengy.org/Inverted-Index-in-the-Luence/</loc>
     
     <lastmod>2017-09-27T14:07:04.000Z</lastmod>
     

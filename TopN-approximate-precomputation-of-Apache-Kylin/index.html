@@ -108,24 +108,31 @@
 
 
 
-  <meta name="description" content="MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
+  <meta name="description" content="在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MongoDB Data Migration">
-<meta property="og:url" content="http://blog.mengy.org/MongoDB-Data-Migrate/index.html">
+<meta property="og:title" content="Apache Kylin的Top-N近似预计算">
+<meta property="og:url" content="http://blog.mengy.org/TopN-approximate-precomputation-of-Apache-Kylin/index.html">
 <meta property="og:site_name" content="Mengy">
-<meta property="og:description" content="MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
+<meta property="og:description" content="在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-27T14:07:04.000Z">
+<meta property="og:image" content="http://blog.mengy.org/images/28law-and-zipf.png">
+<meta property="og:image" content="http://blog.mengy.org/images/longtail.png">
+<meta property="og:image" content="http://blog.mengy.org/images/1.png">
+<meta property="og:image" content="http://blog.mengy.org/images/2.png">
+<meta property="og:image" content="http://blog.mengy.org/images/3.png">
+<meta property="og:image" content="http://blog.mengy.org/images/4.png">
+<meta property="og:updated_time" content="2018-10-11T17:12:54.812Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MongoDB Data Migration">
-<meta name="twitter:description" content="MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。  备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。  需要考虑数据一致性的问题。">
+<meta name="twitter:title" content="Apache Kylin的Top-N近似预计算">
+<meta name="twitter:description" content="在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。">
+<meta name="twitter:image" content="http://blog.mengy.org/images/28law-and-zipf.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://blog.mengy.org/MongoDB-Data-Migrate/"/>
+  <link rel="canonical" href="http://blog.mengy.org/TopN-approximate-precomputation-of-Apache-Kylin/"/>
 
 
 
@@ -135,7 +142,7 @@
   };
 </script>
 
-  <title>MongoDB Data Migration | Mengy</title>
+  <title>Apache Kylin的Top-N近似预计算 | Mengy</title>
   
 
 
@@ -336,7 +343,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/MongoDB-Data-Migrate/">
+    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/TopN-approximate-precomputation-of-Apache-Kylin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mengy">
@@ -353,7 +360,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">MongoDB Data Migration
+          <h2 class="post-title" itemprop="name headline">Apache Kylin的Top-N近似预计算
               
             
           </h2>
@@ -378,24 +385,12 @@
                 
               
 
-              <time title="Created: 2017-09-24 09:25:59" itemprop="dateCreated datePublished" datetime="2017-09-24T09:25:59+08:00">2017-09-24</time>
+              <time title="Created: 2018-10-12 00:43:18 / Modified: 01:12:54" itemprop="dateCreated datePublished" datetime="2018-10-12T00:43:18+08:00">2018-10-12</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2017-09-27 22:07:04" itemprop="dateModified" datetime="2017-09-27T22:07:04+08:00">2017-09-27</time>
               
             
           </span>
@@ -409,10 +404,10 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/MongoDB-Data-Migrate/#comments" itemprop="discussionUrl">
+                <a href="/TopN-approximate-precomputation-of-Apache-Kylin/#comments" itemprop="discussionUrl">
                 
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="MongoDB-Data-Migrate/" itemprop="commentCount"></span>
+                        data-disqus-identifier="TopN-approximate-precomputation-of-Apache-Kylin/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -440,43 +435,32 @@
       
 
       
-        <ul>
-<li><p>MongoDB使用json和bson（binary json）格式存储信息。json使用起来非常方便，但是其并不支持bson里的所有数据类型。如果使用json备份数据就会有信息丢失。</p>
-</li>
-<li><p>备份和恢复MongoDB数据库可能会消耗大量的CPU、内存和磁盘资源，最好是在非高峰期进行。</p>
-</li>
-<li><p>需要考虑数据一致性的问题。</p>
-</li>
-</ul>
+        <p>在大数据处理场景，由于数据量巨大，某些功能严格准确实现可能会耗费可观的资源，甚至无法计算。这种情况需要牺牲一定的准确性来换取的灵活性和性能。<br>在最近项目中需要定时计算Top N，并提供数天内的Top N，经过考虑后，计划每次计算出Top N * M，然后合并出Top N，当然M越大，最终的结果越准确。<br>但是还是希望找到业界处理类似问题的方案，最终找到了下面这篇文章。</p>
 <a id="more"></a>
-<h2 id="一致性（Consistency）"><a href="#一致性（Consistency）" class="headerlink" title="一致性（Consistency）"></a>一致性（Consistency）</h2><p>一致性是指事务使得系统从一个一致的状态转换到另一个一致状态。事务的一致性决定了一个系统设计和实现的复杂度。事务可以不同程度的一致性：强一致性：读操作可以立即读到提交的更新操作。弱一致性：提交的更新操作，不一定立即会被读操作读到，此种情况会存在一个不一致窗口，指的是读操作可以读到最新值的一段时间。最终一致性：是弱一致性的特例。事务更新一份数据，最终一致性保证在没有其他事务更新同样的值的话，最终所有的事务都会读到之前事务更新的最新值。如果没有错误发生，不一致窗口的大小依赖于：通信延迟，系统负载等。     其他一致性变体还有：单调一致性：如果一个进程已经读到一个值，那么后续不会读到更早的值。会话一致性：保证客户端和服务器交互的会话过程中，读操作可以读到更新操作后的最新值。</p>
-<h2 id="copydb-amp-clone"><a href="#copydb-amp-clone" class="headerlink" title="copydb &amp; clone"></a>copydb &amp; clone</h2><blockquote>
-<p>Concurrency</p>
+<p>Apache Kylin是一个开源的分布式分析引擎，提供Hadoop之上的SQL查询接口及多维分析（OLAP）能力以支持超大规模数据。它能在亚秒内查询巨大的数据集 。本文将详细介绍Apache Kylin 1.5中的新功能： Top-N预计算。</p>
+<p>大家都听过二八定律，这是在很多领域存在的规律，例如世界上20%的人占有了超过80%的财富；20%最受欢迎的商品，贡献超过了80%的销售额等等。 二八定律背后的规律是Zipf分布法则，它是美国学者G.K.齐普夫在统计英文单词出现频率时发现的规律。简单说就是如果把频率出现最高的单词的频率看作是1的话，第二个出现的频率是二分之一，第三个是三分之一，依此类推，出现的频率是它排名的某次幂分之一。</p>
+<p><img src="/images/28law-and-zipf.png" alt="二八定律&amp;facebook上统计的NBA各球队受赞次数排名，也基本符合Zipf分布"></p>
+<p>在互联网时代，还有一个知名的理论－长尾效应，举例来说就是某个网站的用户或者商品的数量非常的多，但是大部分都是访问频率（或价值）极低的，这条尾巴可以很长。长尾的存在对大数据分析带来挑战，因为它的基数（cardinality）特别高，如何从中快速找到高价值的商品或者用户，是一个迫切而难度很高的任务。</p>
+<p><img src="/images/longtail.png" alt="长尾"></p>
+<p>现在来看一个典型的Top－N查询示例。该查询是选择在 2015年10月1日，地址在北京，销售商品按价格之和排序（倒序），找前100个。</p>
+<p><img src="/images/1.png" alt=""></p>
+<p>在Kylin v1.5之前，SQL中的group by列，需声明成维度，所以这个Cube的维度中要有日期，地点和商品名，度量是SUM(PRICE) 。图3展示了一个这样设计Cube。因为商品的基数很大，计算的cuboid的行数会很多；而度量值SUM(PRICE)是非排序的，因此需要将这些纪录都从存储器读到Kylin查询引擎中（内存）， 然后再排序找出最高的纪录；这样的解决办法总开销较大。</p>
+<p><img src="/images/2.png" alt=""></p>
+<p>针对上面的情形，Kylin开发团队决定另辟蹊径来处理这种查询，研究了多种Top－N的解决方法；由于在大数据的背景下，算法要求一定是可并发执行的，计算结果是需要可再次合并的，而计算结果的少量误差是可以接受的； 最终Kylin选择了Space－Saving算法[1]，以及它的一个衍生版Parallel Space－Saving[2]，并在此之上做了特定的优化。这种算法的优势是使用较少的空间，同时保证较高的精确度。</p>
+<p>有了Top－N之后，Cube的设计会比以前简单很多，因为像刚才的商品名会被挪到Measure中去，在Measure里按Sum值做倒序，只保留最大的若干值。</p>
+<p><img src="/images/3.png" alt=""></p>
+<p>值得一提的是需要用多少空间运算Top－N。简单来说存储空间越多准确率越高。我们通过使用生成一些样本数据然后用Space－Saving计算，并且跟真实结果做比较，发现50倍空间对于普通的数据分布是够用的。也即，用户需要Top 100的结果，Kylin对于每种组合条件值，保留Top 5000的纪录, 并供以后再次合并。这样即使多次合并， Top100依然是比较接近真实结果 。</p>
+<p><img src="/images/4.png" alt=""></p>
+<p>Top－N的优点：因为它只保留Top的记录，会让Cube空间大幅度减少，而查询性能大大提升。在一个典型的例子里，改用Top-N后，Cube的大小减少了90%，而查询时间则只有以前的10%不到。</p>
+<p>缺点是它可能是近似的结果（当50倍空间也无法容纳所有基数的时候）。如果业务场景需要绝对精确的话，它可能不适合。</p>
+<p>Top－N误差率由很多因素决定的：</p>
 <ul>
-<li>copydb and clone do not produce point-in-time snapshots of the source database. Write traffic to the source or destination database during the copy process will result in divergent data sets.</li>
-<li>copydb does not lock the destination server during its operation, so the copy will occasionally yield to allow other operations to complete.</li>
-<li>clone does not snapshot the database. If any clients update the database you’re copying at any point during the clone operation, the resulting database may be inconsistent.</li>
+<li>数据的分布：数据分布越陡，误差越小。</li>
+<li>算法使用的空间：如果对精度要求高的话，可以选择用更多的空间换取更精准的准确率 。在实际使用中，可以做一些比较以了解误差情况。</li>
 </ul>
-</blockquote>
-<p>有数据一致性的问题。</p>
-<h2 id="mongodump-amp-mongorestore"><a href="#mongodump-amp-mongorestore" class="headerlink" title="mongodump &amp; mongorestore"></a>mongodump &amp; mongorestore</h2><ul>
-<li>以bson格式保存，恢复完成后必须重建索引。</li>
-<li>对于小型的数据库是简单高效的备份恢复工具，但是对于大型系统不是一个理想的选择。</li>
-<li>mongodump会显著影响MongoDB的性能。如果数据库大小超过系统内存，有可能出现内存不足和页错误。</li>
-<li>without –oplog， if there are write operations during the dump operation, the dump will not reflect a single moment in time. Changes made to the database during the update process can affect the output of the backup.</li>
-<li>使用oplog可以保证数据一致性</li>
-</ul>
-<h2 id="master-amp-slave"><a href="#master-amp-slave" class="headerlink" title="master &amp; slave"></a>master &amp; slave</h2><p>slave把master的数据保存在了local.sources collection。迁移完成后需要进一步处理。<br>本质上也是利用了oplog, 可以保证数据一致性。</p>
-<h2 id="Replication-Set"><a href="#Replication-Set" class="headerlink" title="Replication Set"></a>Replication Set</h2><p>相当于增强的master slave模式，带有failover机制，多个节点选取一个为主节点，其他为次节点，主节点可读写，次节点只能读，当主节点挂掉会自动选举新的主节点，方便加入新的次节点，扩展数据库系统，本质上也是利用了oplog, 可以保证数据一致性。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>copydb &amp; clone 有数据一致性问题不考虑使用。master &amp; slave模式，slave后续还需要进一步操作，并且官方已不推荐部署此模式。Replication Set提供了很多高级特性，是官方现在推荐的部署模式。处理数据迁移时，master &amp; slave和Replication Set比较接近，前者需要进一步处理，后者配置略麻烦，都相当于自动mongodump + oplogreplay，在数据不是很大的情况下，可以配置一个单节点的Replication Set配合mongodump with oplog比较合适。</p>
-<p>oplog有一个非常重要的特性——幂等性（idempotent）。即对一个数据集合，使用oplog中记录的操作重放时，无论被重放多少次，其结果是一样的。举例来说，如果oplog中记录的是一个插入操作，并不会因为你重放了两次，数据库中就得到两条相同的记录。</p>
-<p>还有一种方法是使用文件系统提供的快照功能，比如LVM。</p>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p><a href="https://www.digitalocean.com/community/tutorials/how-to-back-up-restore-and-migrate-a-mongodb-database-on-ubuntu-14-04" target="_blank" rel="noopener">How To Back Up, Restore, and Migrate a MongoDB Database on Ubuntu 14.04</a></p>
-<p><a href="https://stackoverflow.com/questions/23688043/migrating-mongodb-instances-with-no-down-time" target="_blank" rel="noopener">Migrating MongoDB instances with no down-time</a></p>
-<p><a href="https://docs.mongodb.com/manual/reference/command/clone/#dbcmd.clone" target="_blank" rel="noopener">MongoDB Clone</a></p>
-<p><a href="https://docs.mongodb.com/manual/reference/command/copydb/#dbcmd.copydb" target="_blank" rel="noopener">MongoDB Copydb</a></p>
-<p><a href="https://docs.mongodb.com/manual/replication/" target="_blank" rel="noopener">MongoDB Replication</a></p>
-<p><a href="https://docs.mongodb.com/manual/core/master-slave/" target="_blank" rel="noopener">Master Slave Replication</a></p>
+<p>[1] Ahmed Metwally, et al. “Efficient computation of frequent and top-k elements in data streams”. Proceeding ICDT’05 Proceedings of the 10th international conference on Database Theory, 2005.</p>
+<p>[2] Massimo Cafaro, et al. “A parallel space saving algorithm for frequent items and the Hurwitz zeta distribution”. Proceeding arXiv: 1401.0702v12 [cs.DS] 19 Setp 2015.</p>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p><a href="http://www.infoq.com/cn/news/2016/08/Apache-Kylin-Top-N" target="_blank" rel="noopener">Apache Kylin的Top-N近似预计算</a></p>
 
       
     </div>
@@ -504,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/Inverted-Index-in-the-Luence/" rel="next" title="Inverted Index in the Luence">
-                <i class="fa fa-chevron-left"></i> Inverted Index in the Luence
+              <a href="/Why-numbering-should-start-at-zero/" rel="next" title="Why numbering should start at zero">
+                <i class="fa fa-chevron-left"></i> Why numbering should start at zero
               </a>
             
           </div>
@@ -513,10 +497,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/debug-python-with-gdb-in-offline-centos/" rel="prev" title="Debug Python with GDB in off-line CentOS">
-                Debug Python with GDB in off-line CentOS <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -649,7 +629,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一致性（Consistency）"><span class="nav-number">1.</span> <span class="nav-text">一致性（Consistency）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copydb-amp-clone"><span class="nav-number">2.</span> <span class="nav-text">copydb &amp; clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mongodump-amp-mongorestore"><span class="nav-number">3.</span> <span class="nav-text">mongodump &amp; mongorestore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#master-amp-slave"><span class="nav-number">4.</span> <span class="nav-text">master &amp; slave</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replication-Set"><span class="nav-number">5.</span> <span class="nav-text">Replication Set</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ref"><span class="nav-number"></span> <span class="nav-text">Ref</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ref"><span class="nav-number">1.</span> <span class="nav-text">Ref</span></a></li></ol></div>
             
 
           </div>
@@ -805,9 +785,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://blog.mengy.org/MongoDB-Data-Migrate/';
-        this.page.identifier = 'MongoDB-Data-Migrate/';
-        this.page.title = 'MongoDB Data Migration';
+        this.page.url = 'http://blog.mengy.org/TopN-approximate-precomputation-of-Apache-Kylin/';
+        this.page.identifier = 'TopN-approximate-precomputation-of-Apache-Kylin/';
+        this.page.title = 'Apache Kylin的Top-N近似预计算';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
