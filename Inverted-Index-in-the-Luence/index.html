@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="Mengy">
 <meta property="og:description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-27T14:07:04.000Z">
+<meta property="og:updated_time" content="2019-03-10T14:19:59.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Inverted Index in the Luence">
 <meta name="twitter:description" content="假设有一本书，前面有目录，中间是正文，最后会有附录。有这样一种附录，它会把正文中出现的关键名词列出来，并附上正文中出现的页码。当我们想找某个术语的相关信息时，去附录里查正文出现的页码显然方便些。目录类似于我们常规的索引，一个章节/文件里有什么内容；附录保存的信息和它相反，这个信息出现在哪些章节/文件里。我们称附录这种数据的索引方式叫做“Inverted Index”，中文一般翻译为“倒排索引”。">
@@ -419,7 +419,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2017-09-27 22:07:04" itemprop="dateModified" datetime="2017-09-27T22:07:04+08:00">2017-09-27</time>
+                <time title="Modified: 2019-03-10 22:19:59" itemprop="dateModified" datetime="2019-03-10T22:19:59+08:00">2019-03-10</time>
               
             
           </span>
@@ -483,12 +483,14 @@
 </blockquote>
 <p>所有这些信息都被保存到几个二进制文件里。Lucene为了减少数据的大小，对数据采用了bit packing的压缩方法。举个例子，一个字节可以表示0～127的无符号数，但是如果我们的数据确定最大不会超过63，那就可以只用4位来表示，这样就省去了一半的空间。类似的方法还有ZigZag编码。这部分实现对应代码org.apache.lucene.util.packed。</p>
 <p>为了提高搜索效率，Lucene底层查找Term Dictionary(记录了term在文档中的位置信息)时使用了跳跃链表的数据结构。它相对于平衡二叉树简单，但是也有不错的性能，Redies中也有用到。</p>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p><a href="https://www.slideshare.net/lucenerevolution/what-is-inaluceneagrandfinal" target="_blank" rel="noopener">What is in a Lucene index</a></p>
-<p><a href="http://alexbenedetti.blogspot.hk/2015/07/exploring-solr-internals-lucene.html" target="_blank" rel="noopener">Exploring Solr Internals : The Lucene Inverted Index</a></p>
-<p><a href="https://lucene.apache.org/core/6_6_0/core/org/apache/lucene/codecs/lucene62/package-summary.html#package.description" target="_blank" rel="noopener">Lucene file format</a></p>
-<p><a href="http://blog.jpountz.net/post/25530978824/how-fast-is-bit-packing" target="_blank" rel="noopener">How fast is bit packing</a></p>
-<p><a href="https://zh.wikipedia.org/wiki/%E8%B7%B3%E8%B7%83%E5%88%97%E8%A1%A8" target="_blank" rel="noopener">跳跃链表</a></p>
-<p><a href="https://developers.google.com/protocol-buffers/docs/encoding" target="_blank" rel="noopener">ZigZag in ProtoBuffers</a></p>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><ul>
+<li><a href="https://www.slideshare.net/lucenerevolution/what-is-inaluceneagrandfinal" target="_blank" rel="noopener">What is in a Lucene index</a></li>
+<li><a href="http://alexbenedetti.blogspot.hk/2015/07/exploring-solr-internals-lucene.html" target="_blank" rel="noopener">Exploring Solr Internals : The Lucene Inverted Index</a></li>
+<li><a href="https://lucene.apache.org/core/6_6_0/core/org/apache/lucene/codecs/lucene62/package-summary.html#package.description" target="_blank" rel="noopener">Lucene file format</a></li>
+<li><a href="http://blog.jpountz.net/post/25530978824/how-fast-is-bit-packing" target="_blank" rel="noopener">How fast is bit packing</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%B7%B3%E8%B7%83%E5%88%97%E8%A1%A8" target="_blank" rel="noopener">跳跃链表</a></li>
+<li><a href="https://developers.google.com/protocol-buffers/docs/encoding" target="_blank" rel="noopener">ZigZag in ProtoBuffers</a></li>
+</ul>
 
       
     </div>
@@ -608,7 +610,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

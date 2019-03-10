@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="Mengy">
 <meta property="og:description" content="Valgrind是一款用于构建内存调试、内存泄露检测以及性能分析的软件开发框架，它是一个由来自全世界的开发者组织合作开发得到的开源软件。他的初始作者Julian Seward在2006年获得第二届Google-O’Reilly开源代码奖。Valgrind这个名字取自北欧神话中英灵殿的入口。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-27T14:07:04.000Z">
+<meta property="og:updated_time" content="2019-03-10T14:19:30.022Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Valgrind工作原理简介">
 <meta name="twitter:description" content="Valgrind是一款用于构建内存调试、内存泄露检测以及性能分析的软件开发框架，它是一个由来自全世界的开发者组织合作开发得到的开源软件。他的初始作者Julian Seward在2006年获得第二届Google-O’Reilly开源代码奖。Valgrind这个名字取自北欧神话中英灵殿的入口。">
@@ -419,7 +419,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2017-09-27 22:07:04" itemprop="dateModified" datetime="2017-09-27T22:07:04+08:00">2017-09-27</time>
+                <time title="Modified: 2019-03-10 22:19:30" itemprop="dateModified" datetime="2019-03-10T22:19:30+08:00">2019-03-10</time>
               
             
           </span>
@@ -504,7 +504,9 @@
 <li>disassemble-and-resynthesise (D&amp;R)。<br>Valgrind 使用这种把machine code先转成IR，IR会通过加入更IR来instrument。IR最后转回machine code执行，原本的code对guest state的所有影响都必须明确地转成IR，因为最后执行的是纯粹由IR转成的machine code。</li>
 <li>copy-and-annotate (C&amp;A)。instructions会被逐字地复制(除了一些 control flow 改变)<br>每个instruction都加上注解描述其影响(annotate)，利用这些描述来帮助做instrumentation<br>通过给每条指令添加一个额外的data structure (DynamoRIO)<br>通过提供相应的获取指令相关信息的API (Intel Pin)<br>这些添加的注解可以指导进行相应的instrument，并且不影响原来的native code的执行效果。</li>
 </ul>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><p>本文主要参考了官方的研究论文（ <a href="http://valgrind.org/docs/pubs.html" target="_blank" rel="noopener">http://valgrind.org/docs/pubs.html</a> ）。</p>
+<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><ul>
+<li>本文主要参考了官方的研究论文（ <a href="http://valgrind.org/docs/pubs.html" target="_blank" rel="noopener">http://valgrind.org/docs/pubs.html</a> ）。</li>
+</ul>
 
       
     </div>
@@ -620,7 +622,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
