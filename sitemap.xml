@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mengy.org/books/index.html</loc>
+    
+    <lastmod>2019-05-22T11:52:24.526Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mengy.org/tcp-state-transition/</loc>
     
     <lastmod>2019-03-11T16:36:13.745Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>http://blog.mengy.org/how-valgrind-work/</loc>
     
     <lastmod>2019-03-10T14:19:30.022Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.mengy.org/books/index.html</loc>
-    
-    <lastmod>2018-10-10T16:44:22.734Z</lastmod>
     
   </url>
   
