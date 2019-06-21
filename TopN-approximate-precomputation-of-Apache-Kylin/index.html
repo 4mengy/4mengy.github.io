@@ -15,7 +15,7 @@
 
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -182,7 +182,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -192,7 +192,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
     
@@ -364,20 +364,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/TopN-approximate-precomputation-of-Apache-Kylin/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Mengy">
     </span>
 
@@ -484,14 +484,14 @@
 <p>在互联网时代，还有一个知名的理论－长尾效应，举例来说就是某个网站的用户或者商品的数量非常的多，但是大部分都是访问频率（或价值）极低的，这条尾巴可以很长。长尾的存在对大数据分析带来挑战，因为它的基数（cardinality）特别高，如何从中快速找到高价值的商品或者用户，是一个迫切而难度很高的任务。</p>
 <p><img src="/images/longtail.png" alt="长尾"></p>
 <p>现在来看一个典型的Top－N查询示例。该查询是选择在 2015年10月1日，地址在北京，销售商品按价格之和排序（倒序），找前100个。</p>
-<p><img src="/images/1.png" alt=""></p>
+<p><img src="/images/1.png" alt></p>
 <p>在Kylin v1.5之前，SQL中的group by列，需声明成维度，所以这个Cube的维度中要有日期，地点和商品名，度量是SUM(PRICE) 。图3展示了一个这样设计Cube。因为商品的基数很大，计算的cuboid的行数会很多；而度量值SUM(PRICE)是非排序的，因此需要将这些纪录都从存储器读到Kylin查询引擎中（内存）， 然后再排序找出最高的纪录；这样的解决办法总开销较大。</p>
-<p><img src="/images/2.png" alt=""></p>
+<p><img src="/images/2.png" alt></p>
 <p>针对上面的情形，Kylin开发团队决定另辟蹊径来处理这种查询，研究了多种Top－N的解决方法；由于在大数据的背景下，算法要求一定是可并发执行的，计算结果是需要可再次合并的，而计算结果的少量误差是可以接受的； 最终Kylin选择了Space－Saving算法[1]，以及它的一个衍生版Parallel Space－Saving[2]，并在此之上做了特定的优化。这种算法的优势是使用较少的空间，同时保证较高的精确度。</p>
 <p>有了Top－N之后，Cube的设计会比以前简单很多，因为像刚才的商品名会被挪到Measure中去，在Measure里按Sum值做倒序，只保留最大的若干值。</p>
-<p><img src="/images/3.png" alt=""></p>
+<p><img src="/images/3.png" alt></p>
 <p>值得一提的是需要用多少空间运算Top－N。简单来说存储空间越多准确率越高。我们通过使用生成一些样本数据然后用Space－Saving计算，并且跟真实结果做比较，发现50倍空间对于普通的数据分布是够用的。也即，用户需要Top 100的结果，Kylin对于每种组合条件值，保留Top 5000的纪录, 并供以后再次合并。这样即使多次合并， Top100依然是比较接近真实结果 。</p>
-<p><img src="/images/4.png" alt=""></p>
+<p><img src="/images/4.png" alt></p>
 <p>Top－N的优点：因为它只保留Top的记录，会让Cube空间大幅度减少，而查询性能大大提升。在一个典型的例子里，改用Top-N后，Cube的大小减少了90%，而查询时间则只有以前的10%不到。</p>
 <p>缺点是它可能是近似的结果（当50倍空间也无法容纳所有基数的时候）。如果业务场景需要绝对精确的话，它可能不适合。</p>
 <p>Top－N误差率由很多因素决定的：</p>
@@ -609,7 +609,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Mengy</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -622,7 +622,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -710,7 +710,7 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
 
 
 

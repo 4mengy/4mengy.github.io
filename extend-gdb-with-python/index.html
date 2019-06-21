@@ -96,24 +96,24 @@
 
 
 
-  <meta name="description" content="To denote the subsequence of natural numbers 2, 3, …, 12 without the pernicious three dots, four conventions are open to us">
+  <meta name="description" content="gdb是功能强大、最常使用的调试工具之一。对于绝大多数任务，它都能胜任，并且工作的很好。对于个性化的需求，gdb提供了十分便捷的python api，结合python简洁的语法，我们可以高效地实现我们的想法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Why numbering should start at zero">
-<meta property="og:url" content="http://blog.mengy.org/Why-numbering-should-start-at-zero/index.html">
+<meta property="og:title" content="extend gdb using python">
+<meta property="og:url" content="http://blog.mengy.org/extend-gdb-with-python/index.html">
 <meta property="og:site_name" content="Mengy">
-<meta property="og:description" content="To denote the subsequence of natural numbers 2, 3, …, 12 without the pernicious three dots, four conventions are open to us">
+<meta property="og:description" content="gdb是功能强大、最常使用的调试工具之一。对于绝大多数任务，它都能胜任，并且工作的很好。对于个性化的需求，gdb提供了十分便捷的python api，结合python简洁的语法，我们可以高效地实现我们的想法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-10T14:20:37.014Z">
+<meta property="og:updated_time" content="2019-06-21T15:00:49.018Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Why numbering should start at zero">
-<meta name="twitter:description" content="To denote the subsequence of natural numbers 2, 3, …, 12 without the pernicious three dots, four conventions are open to us">
+<meta name="twitter:title" content="extend gdb using python">
+<meta name="twitter:description" content="gdb是功能强大、最常使用的调试工具之一。对于绝大多数任务，它都能胜任，并且工作的很好。对于个性化的需求，gdb提供了十分便捷的python api，结合python简洁的语法，我们可以高效地实现我们的想法。">
 
 
 
 
 
 
-  <link rel="canonical" href="http://blog.mengy.org/Why-numbering-should-start-at-zero/">
+  <link rel="canonical" href="http://blog.mengy.org/extend-gdb-with-python/">
 
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>Why numbering should start at zero | Mengy</title>
+  <title>extend gdb using python | Mengy</title>
   
 
 
@@ -362,7 +362,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/Why-numbering-should-start-at-zero/">
+    <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/extend-gdb-with-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mengy">
@@ -379,7 +379,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Why numbering should start at zero
+          <h2 class="post-title" itemprop="name headline">extend gdb using python
 
               
             
@@ -405,24 +405,12 @@
                 
               
 
-              <time title="Created: 2018-09-08 21:41:28" itemprop="dateCreated datePublished" datetime="2018-09-08T21:41:28+08:00">2018-09-08</time>
+              <time title="Created: 2019-06-21 21:12:10 / Modified: 23:00:49" itemprop="dateCreated datePublished" datetime="2019-06-21T21:12:10+08:00">2019-06-21</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-03-10 22:20:37" itemprop="dateModified" datetime="2019-03-10T22:20:37+08:00">2019-03-10</time>
               
             
           </span>
@@ -440,8 +428,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/Why-numbering-should-start-at-zero/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Why-numbering-should-start-at-zero/" itemprop="commentCount"></span>
+                <a href="/extend-gdb-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="extend-gdb-with-python/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -469,24 +457,170 @@
       
 
       
-        <p>To denote the subsequence of natural numbers 2, 3, …, 12 without the pernicious three dots, four conventions are open to us</p>
-<a id="more"></a>
-<ul>
-<li>a) 2 ≤ i &lt; 13</li>
-<li>b) 1 &lt; i ≤ 12</li>
-<li>c) 2 ≤ i ≤ 12</li>
-<li>d) 1 &lt; i &lt; 13</li>
-</ul>
-<p>Are there reasons to prefer one convention to the other? Yes, there are. The observation that conventions a) and b) have the advantage that the difference between the bounds as mentioned equals the length of the subsequence is valid. So is the observation that, as a consequence, in either convention two subsequences are adjacent means that the upper bound of the one equals the lower bound of the other. Valid as these observations are, they don’t enable us to choose between a) and b); so let us start afresh.</p>
-<p>There is a smallest natural number. Exclusion of the lower bound —as in b) and d)— forces for a subsequence starting at the smallest natural number the lower bound as mentioned into the realm of the unnatural numbers. That is ugly, so for the lower bound we prefer the ≤ as in a) and c). Consider now the subsequences starting at the smallest natural number: inclusion of the upper bound would then force the latter to be unnatural by the time the sequence has shrunk to the empty one. That is ugly, so for the upper bound we prefer &lt; as in a) and d). We conclude that convention a) is to be preferred.</p>
-<p>Remark  The programming language Mesa, developed at Xerox PARC, has special notations for intervals of integers in all four conventions. Extensive experience with Mesa has shown that the use of the other three conventions has been a constant source of clumsiness and mistakes, and on account of that experience Mesa programmers are now strongly advised not to use the latter three available features. I mention this experimental evidence —for what it is worth— because some people feel uncomfortable with conclusions that have not been confirmed in practice. (End of Remark.)</p>
-<p>* * *</p>
-<p>When dealing with a sequence of length N, the elements of which we wish to distinguish by subscript, the next vexing question is what subscript value to assign to its starting element. Adhering to convention a) yields, when starting with subscript 1, the subscript range 1 ≤ i &lt; N+1; starting with 0, however, gives the nicer range 0 ≤  i &lt; N. So let us let our ordinals start at zero: an element’s ordinal (subscript) equals the number of elements preceding it in the sequence. And the moral of the story is that we had better regard —after all those centuries!— zero as a most natural number.</p>
-<p>Remark  Many programming languages have been designed without due attention to this detail. In FORTRAN subscripts always start at 1; in ALGOL 60 and in PASCAL, convention c) has been adopted; the more recent SASL has fallen back on the FORTRAN convention: a sequence in SASL is at the same time a function on the positive integers. Pity! (End of Remark.)</p>
-<p>* * *</p>
-<p>The above has been triggered by a recent incident, when, in an emotional outburst, one of my mathematical colleagues at the University —not a computing scientist— accused a number of younger computing scientists of “pedantry” because —as they do by habit— they started numbering at zero. He took consciously adopting the most sensible convention as a provocation. (Also the “End of …” convention is viewed of as provocative; but the convention is useful: I know of a student who almost failed at an examination by the tacit assumption that the questions ended at the bottom of the first page.) I think Antony Jay is right when he states: “In corporate religions as in others, the heretic must be cast out not because of the probability that he is wrong but because of the possibility that he is right.”</p>
+        <p>gdb是功能强大、最常使用的调试工具之一。对于绝大多数任务，它都能胜任，并且工作的很好。<br>对于个性化的需求，gdb提供了十分便捷的python api，结合python简洁的语法，我们可以高效地实现我们的想法。<br><a id="more"></a></p>
+<h2 id="gdb提供的设施"><a href="#gdb提供的设施" class="headerlink" title="gdb提供的设施"></a>gdb提供的设施</h2><p>gdb对扩展api进行了抽象，提供如下模块接口：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">抽象模块</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Basic Python</td>
+<td style="text-align:center">Basic Python Functions</td>
+</tr>
+<tr>
+<td style="text-align:center">Exception Handling</td>
+<td style="text-align:center">How Python exceptions are translated</td>
+</tr>
+<tr>
+<td style="text-align:center">Values From Inferior</td>
+<td style="text-align:center">Python representation of values</td>
+</tr>
+<tr>
+<td style="text-align:center">Types In Python</td>
+<td style="text-align:center">Python representation of types</td>
+</tr>
+<tr>
+<td style="text-align:center">Pretty Printing API</td>
+<td style="text-align:center">Pretty-printing values</td>
+</tr>
+<tr>
+<td style="text-align:center">Selecting Pretty-Printers</td>
+<td style="text-align:center">How GDB chooses a pretty-printer</td>
+</tr>
+<tr>
+<td style="text-align:center">Writing a Pretty-Printer</td>
+<td style="text-align:center">Writing a Pretty-Printer</td>
+</tr>
+<tr>
+<td style="text-align:center">Type Printing API</td>
+<td style="text-align:center">Pretty-printing types</td>
+</tr>
+<tr>
+<td style="text-align:center">Frame Filter API</td>
+<td style="text-align:center">Filtering Frames</td>
+</tr>
+<tr>
+<td style="text-align:center">Frame Decorator API</td>
+<td style="text-align:center">Decorating Frames</td>
+</tr>
+<tr>
+<td style="text-align:center">Writing a Frame Filter</td>
+<td style="text-align:center">Writing a Frame Filter</td>
+</tr>
+<tr>
+<td style="text-align:center">Unwinding Frames in Python</td>
+<td style="text-align:center">Writing frame unwinder</td>
+</tr>
+<tr>
+<td style="text-align:center">Xmethods In Python</td>
+<td style="text-align:center">Adding and replacing methods of C++ classes</td>
+</tr>
+<tr>
+<td style="text-align:center">Xmethod API</td>
+<td style="text-align:center">Xmethod types</td>
+</tr>
+<tr>
+<td style="text-align:center">Writing an Xmethod</td>
+<td style="text-align:center">Writing an xmethod</td>
+</tr>
+<tr>
+<td style="text-align:center">Inferiors In Python</td>
+<td style="text-align:center">Python representation of inferiors (processes)</td>
+</tr>
+<tr>
+<td style="text-align:center">Events In Python</td>
+<td style="text-align:center">Listening for events from GDB</td>
+</tr>
+<tr>
+<td style="text-align:center">Threads In Python</td>
+<td style="text-align:center">Accessing inferior threads from Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Recordings In Python</td>
+<td style="text-align:center">Accessing recordings from Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Commands In Python</td>
+<td style="text-align:center">Implementing new commands in Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Parameters In Python</td>
+<td style="text-align:center">Adding new GDB parameters</td>
+</tr>
+<tr>
+<td style="text-align:center">Functions In Python</td>
+<td style="text-align:center">Writing new convenience functions</td>
+</tr>
+<tr>
+<td style="text-align:center">Progspaces In Python</td>
+<td style="text-align:center">Program spaces</td>
+</tr>
+<tr>
+<td style="text-align:center">Objfiles In Python</td>
+<td style="text-align:center">Object files</td>
+</tr>
+<tr>
+<td style="text-align:center">Frames In Python</td>
+<td style="text-align:center">Accessing inferior stack frames from Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Blocks In Python</td>
+<td style="text-align:center">Accessing blocks from Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Symbols In Python</td>
+<td style="text-align:center">Python representation of symbols</td>
+</tr>
+<tr>
+<td style="text-align:center">Symbol Tables In Python</td>
+<td style="text-align:center">Python representation of symbol tables</td>
+</tr>
+<tr>
+<td style="text-align:center">Line Tables In Python</td>
+<td style="text-align:center">Python representation of line tables</td>
+</tr>
+<tr>
+<td style="text-align:center">Breakpoints In Python</td>
+<td style="text-align:center">Manipulating breakpoints using Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Finish Breakpoints in Python</td>
+<td style="text-align:center">Setting Breakpoints on function return using Python</td>
+</tr>
+<tr>
+<td style="text-align:center">Lazy Strings In Python</td>
+<td style="text-align:center">Python representation of lazy strings</td>
+</tr>
+<tr>
+<td style="text-align:center">Architectures In Python</td>
+<td style="text-align:center">Python representation of architectures</td>
+</tr>
+</tbody>
+</table>
+<p>我们使用Commands模块接口实现一个新的gdb命令</p>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>gdb编译时必须使用了”–with-python”选项。可以启动gdb后，使用“show configuration”查看是否启用了该选项。</p>
+<h2 id="新gdb命令"><a href="#新gdb命令" class="headerlink" title="新gdb命令"></a>新gdb命令</h2><h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>gdb的“x”命令可以用来查看一定范围的内存信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/32xb 0x555555557d90</span><br><span class="line">0x555555557d90 &lt;_ZTV1A+16&gt;:	0x84	0x52	0x55	0x55	0x55	0x55	0x00	0x00</span><br><span class="line">0x555555557d98 &lt;_ZTV1A+24&gt;:	0x9e	0x52	0x55	0x55	0x55	0x55	0x00	0x00</span><br><span class="line">0x555555557da0 &lt;_ZTV1A+32&gt;:	0xce	0x51	0x55	0x55	0x55	0x55	0x00	0x00</span><br><span class="line">0x555555557da8 &lt;_ZTV1A+40&gt;:	0xda	0x51	0x55	0x55	0x55	0x55	0x00	0x00</span><br></pre></td></tr></table></figure>
+<p>上面的命令是把内存地址0x555555557d90后连续32字节的数据打印出来。结果的左侧是<br>内存地址，“&lt;_ZTV1A+16&gt;”是指_ZTV1A这个符号地址 + 16字节 = 0x555555557d90。由于该结果是在x86平台得到的，CPU是小端模式，所以0x555555557d90内保存的数据是0x555555555284。</p>
+<p>在gdb执行“info symbol”命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info symbol 0x555555555284</span><br><span class="line">A::~A() in section .text of /tmp/a.out</span><br></pre></td></tr></table></figure></p>
+<p>即，0x555555555284就是A::～A()函数的地址</p>
+<p>我们希望，能将上述两个步骤（x和info symbol命令）结合到一起。</p>
+<h3 id="checksymbol命令"><a href="#checksymbol命令" class="headerlink" title="checksymbol命令"></a>checksymbol命令</h3><p>首先应该“import gdb”导入gdb模块。如果你在普通python会话下使用这一语句，会提示“找不到gdb模块”，即使你将gdb安装目录下的python gdb模块路径加入到PYTHONPATH，仍然会提示“找不到_gdb模块”。gdb启动时会将一个C模块加载到python解释器，所以“import gdb”只能在gdb会话中使用。</p>
+<p>参考gdb官方手册 <a href="https://sourceware.org/gdb/onlinedocs/gdb/Commands-In-Python.html" target="_blank" rel="noopener">https://sourceware.org/gdb/onlinedocs/gdb/Commands-In-Python.html</a><br>，我们需要继承gdb.Command类，然后重写几个关键接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import gdb</span><br><span class="line"></span><br><span class="line">class CheckSymbol(gdb.Command):</span><br><span class="line">	def __init__(self):</span><br><span class="line">		# 调用父类构造函数，第一个参数就是在gdb下使用的命令名，第二个参数指定该命令属于哪一类gdb命令</span><br><span class="line">		super(self.__class__, self).__init__(&apos;checksymbol&apos;, gdb.COMMAND_USER)</span><br><span class="line"></span><br><span class="line">	# 当在gdb下输入命令并回车就会调用该方法，第一个参数是字符串，该命令后面输入的所有参数</span><br><span class="line">	def invoke(self, para_str, from_tty):</span><br><span class="line">		# gdb内部函数，根据空格将参数字符串分组</span><br><span class="line">		paras = gdb.string_to_argv(para_str)</span><br><span class="line">		if len(paras) != 2:</span><br><span class="line">			print(&apos;need 2 para, address length&apos;)</span><br><span class="line">			return</span><br><span class="line"></span><br><span class="line">		addr = paras[0]</span><br><span class="line">		_len = paras[1]</span><br><span class="line"></span><br><span class="line">		# gdb内部函数，执行gdb命令，如果to_string为True则将命令输出返回，否则输出到gdb控制台</span><br><span class="line">		raw_out = gdb.execute(&apos;x/&#123;&#125;xb &#123;&#125;&apos;.format(_len, addr), to_string=True)</span><br><span class="line">		for line in raw_out.split(&apos;\n&apos;):</span><br><span class="line">			if not line:</span><br><span class="line">				continue</span><br><span class="line">			one_line = line.split(&apos;\t&apos;)</span><br><span class="line">			addr_detail = one_line[0]</span><br><span class="line">			# 由于小端模式，将数据倒序</span><br><span class="line">			symbol_addr = &apos;0x&apos; + &apos;&apos;.join([i.replace(&apos;0x&apos;, &apos;&apos;) for i in one_line[-1:0:-1]])</span><br><span class="line">			# gdb内部函数，查找地址对应的符号</span><br><span class="line">			symbol_detail = gdb.execute(&apos;info symbol &apos; + symbol_addr, to_string=True).rstrip(&apos;\n&apos;)</span><br><span class="line">			# 将数据输出到gdb控制台</span><br><span class="line">			print(addr_detail, &apos;\t&apos;, symbol_addr, &apos;\t&apos;, symbol_detail)</span><br><span class="line"></span><br><span class="line"># 向gdb注册该命令</span><br><span class="line">CheckSymbol()</span><br></pre></td></tr></table></figure>
+<p>以上我们就实现了checksymbol命令。</p>
+<p>首先启动gdb，在gdb控制台source python文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(gdb) source ~/checksymbol.py</span><br><span class="line">(gdb) checksymbol 0x555555557d90 32</span><br><span class="line">0x555555557d90 &lt;_ZTV1A+16&gt;: 	 0x0000555555555284 	 A::~A()</span><br><span class="line">0x555555557d98 &lt;_ZTV1A+24&gt;: 	 0x000055555555529e 	 A::~A()</span><br><span class="line">0x555555557da0 &lt;_ZTV1A+32&gt;: 	 0x00005555555551ce 	 A::test()</span><br><span class="line">0x555555557da8 &lt;_ZTV1A+40&gt;: 	 0x00005555555551da 	 A::fa()</span><br></pre></td></tr></table></figure>
+<p>对比上面x命令的结果，checksymbol命令的结果给出的符号信息，更有利于debug和研究学习。</p>
+<p>目前checksymbol命令的参数不能是表达式，例如“checksymbol &amp;a 32”。gdb也提供了内部函数来满足这种需求。</p>
+<p>可以按如下修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">addr = gdb.parse_and_eval(paras[0])</span><br><span class="line">_len = gdb.parse_and_eval(paras[1])</span><br></pre></td></tr></table></figure></p>
 <h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h1><ul>
-<li><a href="https://www.cs.utexas.edu/users/EWD/transcriptions/EWD08xx/EWD831.html" target="_blank" rel="noopener">EWD831</a></li>
+<li><a href="https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html" target="_blank" rel="noopener">python api</a></li>
+<li><a href="https://github.com/4mengy/gdb_extension" target="_blank" rel="noopener">checksymbol</a></li>
 </ul>
 
       
@@ -518,8 +652,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/docker-pid1-zombie-and-signal-problem/" rel="next" title="Docker:pid1 zombie and signal problem">
-                <i class="fa fa-chevron-left"></i> Docker:pid1 zombie and signal problem
+              <a href="/tcp-state-transition/" rel="next" title="TCP State Transition">
+                <i class="fa fa-chevron-left"></i> TCP State Transition
               </a>
             
           </div>
@@ -527,10 +661,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/TopN-approximate-precomputation-of-Apache-Kylin/" rel="prev" title="Apache Kylin的Top-N近似预计算">
-                Apache Kylin的Top-N近似预计算 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -661,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ref"><span class="nav-number">1.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb提供的设施"><span class="nav-number">1.</span> <span class="nav-text">gdb提供的设施</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新gdb命令"><span class="nav-number">3.</span> <span class="nav-text">新gdb命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用途"><span class="nav-number">3.1.</span> <span class="nav-text">用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checksymbol命令"><span class="nav-number">3.2.</span> <span class="nav-text">checksymbol命令</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#Ref"><span class="nav-number"></span> <span class="nav-text">Ref</span></a></li></div>
             
 
           </div>
@@ -814,9 +944,9 @@
 
 <script>
   var disqus_config = function() {
-    this.page.url = "http://blog.mengy.org/Why-numbering-should-start-at-zero/";
-    this.page.identifier = "Why-numbering-should-start-at-zero/";
-    this.page.title = 'Why numbering should start at zero';
+    this.page.url = "http://blog.mengy.org/extend-gdb-with-python/";
+    this.page.identifier = "extend-gdb-with-python/";
+    this.page.title = 'extend gdb using python';
     };
   function loadComments() {
     var d = document, s = d.createElement('script');

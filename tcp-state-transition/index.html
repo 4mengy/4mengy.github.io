@@ -15,7 +15,7 @@
 
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -181,7 +181,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -191,7 +191,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
     
@@ -363,20 +363,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.mengy.org/tcp-state-transition/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mengy">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Mengy">
     </span>
 
@@ -477,8 +477,8 @@
       
         <p>TCP(Transmission Control Protocol) 是由 IETF 的 RFC 793 定义的一种面向连接的、可靠的、基于字节流的传输层通信协议。</p>
 <a id="more"></a>
-<h1 id="TCP-报文段"><a href="#TCP-报文段" class="headerlink" title="TCP 报文段"></a>TCP 报文段</h1><p>TCP 数据被封装在一个 IP 数据报中，如下图所示：<br><img src="/images/socket-program-1.png" alt=""></p>
-<p>下图是 TCP 首部的数据格式，如果不计任选字段，它通常是20个字节：<br><img src="/images/socket-program-2.png" alt=""></p>
+<h1 id="TCP-报文段"><a href="#TCP-报文段" class="headerlink" title="TCP 报文段"></a>TCP 报文段</h1><p>TCP 数据被封装在一个 IP 数据报中，如下图所示：<br><img src="/images/socket-program-1.png" alt></p>
+<p>下图是 TCP 首部的数据格式，如果不计任选字段，它通常是20个字节：<br><img src="/images/socket-program-2.png" alt></p>
 <p>下面介绍重要的几个数据：</p>
 <ul>
 <li>32位序号：表示数据当前发送的第一个字节在字节流中的序号</li>
@@ -496,7 +496,7 @@
 <p>其余的解释请参考 TCP/IP 协议详解。</p>
 <h1 id="TCP-连接的状态图"><a href="#TCP-连接的状态图" class="headerlink" title="TCP 连接的状态图"></a>TCP 连接的状态图</h1><p><img src="/images/TCPIP_State_Transition_Diagram-2.jpg" alt="tcp state"></p>
 <h1 id="TCP-连接的建立与终止"><a href="#TCP-连接的建立与终止" class="headerlink" title="TCP 连接的建立与终止"></a>TCP 连接的建立与终止</h1><p>TCP 是一个面向连接的通信协议，这要求通信双方在进行通信之前，需要先建立其连接。在常见的客户端、服务器模式的程序中，通常是服务器绑定端口，并在该端口上监听客户端连接请求；客户端主动向服务器发起连接请求，待服务器响应后，双方建立起一条通信链路。</p>
-<h2 id="建立"><a href="#建立" class="headerlink" title="建立"></a>建立</h2><p>TCP 连接建立时通信双方的分组报文如下图所示：<br><img src="/images/socket-program-tcp-connect.png" alt=""></p>
+<h2 id="建立"><a href="#建立" class="headerlink" title="建立"></a>建立</h2><p>TCP 连接建立时通信双方的分组报文如下图所示：<br><img src="/images/socket-program-tcp-connect.png" alt></p>
 <p>如图所示，客户端调用connect，此时客户端发送SYN报文；服务端调用accept接受该连接请求，同时发送SYN和ACK；等到客户端响应了ACK后，双方建立起完整连接。</p>
 <p>将上述过程映射到TCP状态图上进行观察，在服务器端：</p>
 <ul>
@@ -514,7 +514,7 @@
 </ul>
 <p>如果，客户端在发送了SYN报文后，等待超时，重试几次后，便会触发 Timeout进入<code>CLOSED</code> ，在应用层则表示为connect函数调用失败。</p>
 <h2 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h2><p>FIN报文用于通知对方关闭本方向的连接。由于TCP是一个全双工的通信协议，像管道一样，支持关闭某一方向上的连接，所以在TCP中关闭连接需要双方都发送FIN报文。此时分组报文如下图所示：</p>
-<p><img src="/images/socket-program-tcp-close.png" alt=""></p>
+<p><img src="/images/socket-program-tcp-close.png" alt></p>
 <p>当某一方关闭连接时，发送FIN报文给另一方，对方回复ACK，同时也发送 FIN报文；等到双方都收到最后的ACK后，连接关闭。当然，如果另一方只回复了ACK而没有发送FIN报文，则表示对方仍然想要发送数据，这种情况称为TCP的半关闭。只有当双方都发送了FIN并接收到对方的ACK后，才算真正的连接关闭。所以上图中Server端的FIN报文可以在接收到Client的FIN报文后，隔一段时间再发送。</p>
 <p>在状态图中对应了主动关闭和被动关闭，首先观察主动关闭：</p>
 <ul>
@@ -603,6 +603,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/extend-gdb-with-python/" rel="prev" title="extend gdb using python">
+                extend gdb using python <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -664,7 +668,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Mengy</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -677,7 +681,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -765,7 +769,7 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
 
 
 
