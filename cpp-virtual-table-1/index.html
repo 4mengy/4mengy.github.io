@@ -98,14 +98,14 @@
 
   <meta name="description" content="学习和使用C++，继承和多态是避免不了的话题，其中核心就是虚函数表。接下来几篇文章，分几种继承情况，利用gdb解析虚函数表的结构。 C++标准并没有规定编译器如何实现C++的各种特性，所以不同编译器实现方法一般不同。在上世纪90年代，GCC使用“setjmp”和“longjmp”实现异常处理。当Intel制造Itanium处理器时，Intel想让Intel Compiler和GCC可以一定程度互操">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 虚函数表 —— 单继承">
+<meta property="og:title" content="使用gdb探索 C++ 虚函数表 —— 单继承">
 <meta property="og:url" content="http://blog.mengy.org/cpp-virtual-table-1/index.html">
 <meta property="og:site_name" content="Mengy">
 <meta property="og:description" content="学习和使用C++，继承和多态是避免不了的话题，其中核心就是虚函数表。接下来几篇文章，分几种继承情况，利用gdb解析虚函数表的结构。 C++标准并没有规定编译器如何实现C++的各种特性，所以不同编译器实现方法一般不同。在上世纪90年代，GCC使用“setjmp”和“longjmp”实现异常处理。当Intel制造Itanium处理器时，Intel想让Intel Compiler和GCC可以一定程度互操">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-25T15:59:47.143Z">
+<meta property="og:updated_time" content="2019-06-26T14:08:34.170Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 虚函数表 —— 单继承">
+<meta name="twitter:title" content="使用gdb探索 C++ 虚函数表 —— 单继承">
 <meta name="twitter:description" content="学习和使用C++，继承和多态是避免不了的话题，其中核心就是虚函数表。接下来几篇文章，分几种继承情况，利用gdb解析虚函数表的结构。 C++标准并没有规定编译器如何实现C++的各种特性，所以不同编译器实现方法一般不同。在上世纪90年代，GCC使用“setjmp”和“longjmp”实现异常处理。当Intel制造Itanium处理器时，Intel想让Intel Compiler和GCC可以一定程度互操">
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>C++ 虚函数表 —— 单继承 | Mengy</title>
+  <title>使用gdb探索 C++ 虚函数表 —— 单继承 | Mengy</title>
   
 
 
@@ -379,7 +379,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">C++ 虚函数表 —— 单继承
+          <h2 class="post-title" itemprop="name headline">使用gdb探索 C++ 虚函数表 —— 单继承
 
               
             
@@ -422,7 +422,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-06-25 23:59:47" itemprop="dateModified" datetime="2019-06-25T23:59:47+08:00">2019-06-25</time>
+                <time title="Modified: 2019-06-26 22:08:34" itemprop="dateModified" datetime="2019-06-26T22:08:34+08:00">2019-06-26</time>
               
             
           </span>
@@ -470,7 +470,7 @@
 
       
         <p>学习和使用C++，继承和多态是避免不了的话题，其中核心就是虚函数表。接下来几篇文章，分几种继承情况，利用gdb解析虚函数表的结构。</p>
-<p>C++标准并没有规定编译器如何实现C++的各种特性，所以不同编译器实现方法一般不同。<br>在上世纪90年代，GCC使用“setjmp”和“longjmp”实现异常处理。当Intel制造Itanium处理器时，Intel想让Intel Compiler和GCC可以一定程度互操作，当然包括互抛异常。于是Intel和GCC组织了一个工作组来设计新的ABI，即Itanium ABI。随后GCC开发者将该ABI扩展到了其他的处理器和操作系统。由于该ABI设计良好，LLVM也选择了使用它。微软的MSVC编译器一直使用自己的ABI实现。<br><a id="more"></a></p>
+<p>C++标准并没有规定编译器如何实现C++的各种特性，所以不同编译器实现方法一般不同。<br>在上世纪90年代，GCC使用“setjmp”和“longjmp”实现异常处理。当Intel制造Itanium处理器时，Intel想让Intel Compiler和GCC可以一定程度互操作，当然包括互抛异常。于是Intel和GCC组织了一个工作组来设计新的ABI，即Itanium ABI。随后GCC开发者将该ABI扩展到了其他的处理器和操作系统。由于该ABI设计良好，LLVM也选择使用它。微软的MSVC编译器使用自己的ABI实现。<br><a id="more"></a></p>
 <p>以下内容均是在下列环境讨论的</p>
 <ul>
 <li>Ubuntu 19.04 64bit系统</li>
@@ -481,118 +481,159 @@
 </ul>
 <p>过程中使用了上篇文章实现的gdb扩展“checksymbol”。该扩展主要是结合了gdb的“x”和“info symbol”命令。<br>“checksymbol”接受两个参数，地址a和长度l，它会打印从地址a开始l字节的地址及其内容，每8字节一行</p>
 <blockquote>
-<p>地址a &lt;地址a的符号名（如果有）&gt;:      地址a中的内容      地址a中内容的符号名（如果有）</p>
+<p>地址a &lt;地址a的符号名（如果有）&gt;:      地址a中的内容（8字节）      地址a中内容（8字节）的符号名（如果有）</p>
 </blockquote>
 <h2 id="单继承没有覆盖"><a href="#单继承没有覆盖" class="headerlink" title="单继承没有覆盖"></a>单继承没有覆盖</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    A() : ma&#123;<span class="number">-1</span>&#125; &#123;&#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~A() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">va1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">va2</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fa1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="keyword">long</span> ma;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    B() : mb&#123;<span class="number">-2</span>&#125; &#123;&#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~B() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vb1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vb2</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fb1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="keyword">long</span> mb;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> :</span> <span class="keyword">public</span> B &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    C() : mc&#123;<span class="number">-3</span>&#125; &#123;&#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~C() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vc1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vc2</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fc1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="keyword">long</span> mc;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    B b;</span><br><span class="line">    C c;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在gdb调试上述代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 检查a的内存布局</span><br><span class="line">(gdb) checksymbol &amp;a sizeof(a)</span><br><span class="line">debug info, addr is: 0x7fffffffde20, len is: 16</span><br><span class="line">0x7fffffffde20: 	 0x0000555555557d50 	 vtable for A + 16</span><br><span class="line">0x7fffffffde28: 	 0xffffffffffffffff 	 No symbol matches 0xffffffffffffffff.</span><br><span class="line"></span><br><span class="line">// 检查a的虚函数表</span><br><span class="line">(gdb) checksymbol *(long*)&amp;a-16 48</span><br><span class="line">debug info, addr is: 93824992247104, len is: 48</span><br><span class="line">0x555555557d40 &lt;vtable for A&gt;: 	 0x0000000000000000 	 No symbol matches 0x0000000000000000.</span><br><span class="line">0x555555557d48 &lt;vtable for A+8&gt;: 	 0x0000555555557da0 	 typeinfo for A</span><br><span class="line">0x555555557d50 &lt;vtable for A+16&gt;: 	 0x0000555555555206 	 A::~A()</span><br><span class="line">0x555555557d58 &lt;vtable for A+24&gt;: 	 0x0000555555555220 	 A::~A()</span><br><span class="line">0x555555557d60 &lt;vtable for A+32&gt;: 	 0x00005555555551ee 	 A::va1()</span><br><span class="line">0x555555557d68 &lt;vtable for A+40&gt;: 	 0x00005555555551fa 	 A::va2()</span><br></pre></td></tr></table></figure></p>
 <p>只有虚函数才会出现在虚函数表中。</p>
 <p>类实例的前8字节是指向虚函数表的指针，但是注意它并没有指向虚函数表的起始地址，后面是类成员。</p>
-<p>虚函数表第一个8字节是offset to top，不再本篇讨论范围。</p>
-<p>第二个8字节是用于支持RTTI的type info信息的地址，就算编译时禁用RTTI，虚函数表还是有这一项，只是内容没意义</p>
-<p>第三和第四个8字节是虚析构函数的地址，至于为什么是两个，不在本篇讨论范围，参见文末Ref。</p>
-<p>剩下的就是各个虚函数的地址</p>
+<p>虚函数表第一个8字节是top_offset，在单继承中没有什么作用，均是0。</p>
+<p>第二个8字节是用于支持RTTI的type info指针，就算编译时禁用RTTI，虚函数表还是有这一项，只是内容没意义</p>
+<p>第三和第四个8字节是虚析构函数的指针，至于为什么是两个，不在本篇讨论范围，参见文末Ref。</p>
+<p>剩下的就是各个虚函数的指针</p>
 <p>所以一个有虚函数的普通类的结构</p>
+<p>内存结构：</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">内存布局</th>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">内容</th>
+<th style="text-align:center">含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">虚表地址（vtable + 16）</td>
-<td style="text-align:center"></td>
+<td style="text-align:center">0x7fffffffde20</td>
+<td style="text-align:center">0x0000555555557d50</td>
+<td style="text-align:center">vtable for A + 16 虚函数表指针</td>
 </tr>
 <tr>
-<td style="text-align:center">类成员</td>
-<td style="text-align:center"></td>
+<td style="text-align:center">0x7fffffffde28</td>
+<td style="text-align:center">0xffffffffffffffff</td>
+<td style="text-align:center">A::ma</td>
 </tr>
 </tbody>
 </table>
+<p>虚函数表结构：</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">虚函数表</th>
-<th style="text-align:center">地址offset</th>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">内容</th>
+<th style="text-align:center">含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">offset to top</td>
-<td style="text-align:center">vtable + 0</td>
+<td style="text-align:center">0x555555557d40</td>
+<td style="text-align:center">0x0000000000000000</td>
+<td style="text-align:center">top_offset</td>
 </tr>
 <tr>
-<td style="text-align:center">type info地址</td>
-<td style="text-align:center">vtable + 8</td>
+<td style="text-align:center">0x555555557d48</td>
+<td style="text-align:center">0x0000555555557da0</td>
+<td style="text-align:center">typeinfo for A</td>
 </tr>
 <tr>
-<td style="text-align:center">虚析构函数1地址</td>
-<td style="text-align:center">vtable + 16</td>
+<td style="text-align:center">0x555555557d50</td>
+<td style="text-align:center">0x0000555555555206</td>
+<td style="text-align:center">A::~A()</td>
 </tr>
 <tr>
-<td style="text-align:center">虚析构函数2地址</td>
-<td style="text-align:center">vtable + 24</td>
+<td style="text-align:center">0x555555557d58</td>
+<td style="text-align:center">0x0000555555555220</td>
+<td style="text-align:center">A::~A()</td>
 </tr>
 <tr>
-<td style="text-align:center">其他虚函数地址</td>
-<td style="text-align:center">…</td>
+<td style="text-align:center">0x555555557d60</td>
+<td style="text-align:center">0x00005555555551ee</td>
+<td style="text-align:center">A::va1()</td>
+</tr>
+<tr>
+<td style="text-align:center">0x555555557d68</td>
+<td style="text-align:center">0x00005555555551fa</td>
+<td style="text-align:center">A::va2()</td>
 </tr>
 </tbody>
 </table>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(gdb) checksymbol &amp;b sizeof(b)</span><br><span class="line">debug info, addr is: 0x7fffffffde30, len is: 24</span><br><span class="line">0x7fffffffde30: 	 0x0000555555557d10 	 vtable for B + 16</span><br><span class="line">0x7fffffffde38: 	 0xffffffffffffffff 	 No symbol matches 0xffffffffffffffff.</span><br><span class="line">0x7fffffffde40: 	 0xfffffffffffffffe 	 No symbol matches 0xfffffffffffffffe.</span><br><span class="line"></span><br><span class="line">(gdb) checksymbol *(long*)&amp;b-16 64</span><br><span class="line">debug info, addr is: 93824992247040, len is: 64</span><br><span class="line">0x555555557d00 &lt;vtable for B&gt;: 	 0x0000000000000000 	 No symbol matches 0x0000000000000000.</span><br><span class="line">0x555555557d08 &lt;vtable for B+8&gt;: 	 0x0000555555557d88 	 typeinfo for B</span><br><span class="line">0x555555557d10 &lt;vtable for B+16&gt;: 	 0x000055555555529a 	 B::~B()</span><br><span class="line">0x555555557d18 &lt;vtable for B+24&gt;: 	 0x00005555555552c4 	 B::~B()</span><br><span class="line">0x555555557d20 &lt;vtable for B+32&gt;: 	 0x00005555555551ee 	 A::va1()</span><br><span class="line">0x555555557d28 &lt;vtable for B+40&gt;: 	 0x00005555555551fa 	 A::va2()</span><br><span class="line">0x555555557d30 &lt;vtable for B+48&gt;: 	 0x0000555555555282 	 B::vb1()</span><br><span class="line">0x555555557d38 &lt;vtable for B+56&gt;: 	 0x000055555555528e 	 B::vb2()</span><br></pre></td></tr></table></figure>
 <p>类B的结构和类A很接近，只是多了继承自类A的虚函数</p>
+<p>内存结构：</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">内存布局</th>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">内容</th>
+<th style="text-align:center">含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">虚表地址（vtable + 16）</td>
-<td style="text-align:center"></td>
+<td style="text-align:center">0x7fffffffde30</td>
+<td style="text-align:center">0x0000555555557d10</td>
+<td style="text-align:center">vtable for B + 16 虚函数表指针</td>
 </tr>
 <tr>
-<td style="text-align:center">基类的类成员</td>
-<td style="text-align:center"></td>
+<td style="text-align:center">0x7fffffffde38</td>
+<td style="text-align:center">0xffffffffffffffff</td>
+<td style="text-align:center">A::ma</td>
 </tr>
 <tr>
-<td style="text-align:center">派生类的类成员</td>
-<td style="text-align:center"></td>
+<td style="text-align:center">0x7fffffffde40</td>
+<td style="text-align:center">0xfffffffffffffffe</td>
+<td style="text-align:center">B::mb</td>
 </tr>
 </tbody>
 </table>
+<p>虚函数表结构：</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">虚函数表</th>
-<th style="text-align:center">地址offset</th>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">内容</th>
+<th style="text-align:center">含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">offset to top</td>
-<td style="text-align:center">vtable + 0</td>
+<td style="text-align:center">0x555555557d00</td>
+<td style="text-align:center">0x0000000000000000</td>
+<td style="text-align:center">top_offset</td>
 </tr>
 <tr>
-<td style="text-align:center">type info地址</td>
-<td style="text-align:center">vtable + 8</td>
+<td style="text-align:center">0x555555557d08</td>
+<td style="text-align:center">0x0000555555557d88</td>
+<td style="text-align:center">typeinfo for B</td>
 </tr>
 <tr>
-<td style="text-align:center">派生类虚析构函数1地址</td>
-<td style="text-align:center">vtable + 16</td>
+<td style="text-align:center">0x555555557d10</td>
+<td style="text-align:center">0x000055555555529a</td>
+<td style="text-align:center">B::~B()</td>
 </tr>
 <tr>
-<td style="text-align:center">派生类虚析构函数2地址</td>
-<td style="text-align:center">vtable + 24</td>
+<td style="text-align:center">0x555555557d18</td>
+<td style="text-align:center">0x00005555555552c4</td>
+<td style="text-align:center">B::~B()</td>
 </tr>
 <tr>
-<td style="text-align:center">基类其他虚函数地址</td>
-<td style="text-align:center">…</td>
+<td style="text-align:center">0x555555557d20</td>
+<td style="text-align:center">0x00005555555551ee</td>
+<td style="text-align:center">A::va1()</td>
 </tr>
 <tr>
-<td style="text-align:center">派生类其他虚函数地址</td>
-<td style="text-align:center">…</td>
+<td style="text-align:center">0x555555557d28</td>
+<td style="text-align:center">0x00005555555551fa</td>
+<td style="text-align:center">A::va2()</td>
+</tr>
+<tr>
+<td style="text-align:center">0x555555557d30</td>
+<td style="text-align:center">0x0000555555555282</td>
+<td style="text-align:center">B::vb1()</td>
+</tr>
+<tr>
+<td style="text-align:center">0x555555557d38</td>
+<td style="text-align:center">0x000055555555528e</td>
+<td style="text-align:center">B::vb2()</td>
 </tr>
 </tbody>
 </table>
@@ -685,8 +726,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/extend-gdb-with-python/" rel="next" title="extend gdb using python">
-                <i class="fa fa-chevron-left"></i> extend gdb using python
+              <a href="/extend-gdb-with-python/" rel="next" title="使用Python扩展gdb">
+                <i class="fa fa-chevron-left"></i> 使用Python扩展gdb
               </a>
             
           </div>
@@ -979,7 +1020,7 @@
   var disqus_config = function() {
     this.page.url = "http://blog.mengy.org/cpp-virtual-table-1/";
     this.page.identifier = "cpp-virtual-table-1/";
-    this.page.title = 'C++ 虚函数表 —— 单继承';
+    this.page.title = '使用gdb探索 C++ 虚函数表 —— 单继承';
     };
   function loadComments() {
     var d = document, s = d.createElement('script');
