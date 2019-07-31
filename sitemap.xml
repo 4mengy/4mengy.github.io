@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mengy.org/books/index.html</loc>
+    
+    <lastmod>2019-07-31T14:40:00.807Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mengy.org/cpp-virtual-table-2/</loc>
     
     <lastmod>2019-06-26T16:25:13.945Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://blog.mengy.org/extend-gdb-with-python/</loc>
     
     <lastmod>2019-06-26T13:41:25.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.mengy.org/books/index.html</loc>
-    
-    <lastmod>2019-06-16T14:25:48.730Z</lastmod>
     
   </url>
   
